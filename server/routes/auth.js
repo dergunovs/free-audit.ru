@@ -9,7 +9,7 @@ app.use(cookieParser());
 
 app.use(
   expressJwt({
-    secret: process.env.TOKEN,
+    secret: process.env.SECRET,
     algorithms: ["HS256"]
   }).unless({
     path: "/api/auth/login"
@@ -18,7 +18,7 @@ app.use(
 
 router.post("/login", async (req, res) => {
   if (req.body.user === process.env.USER && req.body.password === process.env.PASSWORD) {
-    await jwt.sign({ user: req.body.user }, process.env.TOKEN, { expiresIn: "1d" }, async function(err, token) {
+    await jwt.sign({ user: req.body.user }, process.env.SECRET, { expiresIn: "1d" }, async function(err, token) {
       await res.json({ token: token, user: req.body.user });
     });
   } else {
