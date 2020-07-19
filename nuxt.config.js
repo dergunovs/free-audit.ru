@@ -28,10 +28,6 @@ module.exports = {
 
   plugins: ["~plugins/vee-validate"],
 
-  serverMiddleware: [],
-
-  buildModules: ["@nuxtjs/date-fns"],
-
   dateFns: { defaultLocale: "ru" },
 
   modules: ["@nuxtjs/axios", "@nuxt/http", "@nuxtjs/auth", "@nuxtjs/toast"],
@@ -47,11 +43,12 @@ module.exports = {
       local: {
         endpoints: {
           login: {
-            url: "api/auth/login",
+            url: "/api/auth/login",
             method: "post",
-            propertyName: "token.accessToken"
+            propertyName: "token"
           },
-          user: { propertyName: false }
+          logout: { url: "/api/auth/logout", method: "post" },
+          user: { url: "/api/auth/user", method: "get", propertyName: "user" }
         }
       }
     }

@@ -1,0 +1,173 @@
+$color: #ff5050;
+
+@font-face {
+  font-family: font;
+  src: url(/assets/fonts/plumb-regular.otf) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+}
+@font-face {
+  font-family: font;
+  src: url(/assets/fonts/plumb-bold.otf) format("truetype");
+  font-style: normal;
+  font-weight: 700;
+}
+
+html {
+  font-family: "font";
+  font-size: 16px;
+  line-height: 1.5;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+input,
+select,
+textarea,
+button {
+  font-family: "font";
+}
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+input[type="file"] {
+  font-size: 13px;
+  margin: auto 0;
+  display: flex;
+  padding: 8px 0;
+}
+a {
+  color: $color;
+}
+p {
+  margin: 8px 0;
+}
+h1 {
+  font-size: 24px;
+  text-align: center;
+  margin-top: 64px;
+  margin-bottom: 16px;
+}
+h2 {
+  font-size: 20px;
+}
+ol,
+ul {
+  padding-left: 16px;
+}
+textarea {
+  display: block;
+}
+.center {
+  width: calc(100% - 40px);
+  margin: 0 auto;
+}
+.image-center {
+  display: block;
+  margin: 16px auto;
+}
+.text-center {
+  text-align: center;
+}
+
+header {
+  background-color: #000;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 999;
+  .center {
+    display: flex;
+    justify-content: space-between;
+    color: #fff;
+    nav {
+      display: flex;
+      flex-grow: 1;
+      a {
+        color: #fff;
+        padding: 16px;
+        text-decoration: none;
+        line-height: 1;
+        cursor: pointer;
+        &:last-child {
+          margin-left: auto;
+        }
+        &:hover,
+        &.nuxt-link-exact-active {
+          background-color: #444;
+        }
+      }
+    }
+    .toggle-nav {
+      display: none;
+    }
+  }
+}
+
+.admin-form {
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 1;
+  width: 100%;
+  .w100 {
+    width: 100%;
+  }
+  .w50 {
+    width: 50%;
+  }
+  .w25 {
+    width: 25%;
+  }
+  .w12 {
+    width: 12.5%;
+  }
+  .form-group {
+    padding: 8px;
+    box-sizing: border-box;
+    .form-error-message {
+      display: block;
+      height: 0;
+      font-size: 12px;
+    }
+    label {
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+    .admin-buttons-block {
+      display: flex;
+      justify-content: space-between;
+      margin: 8px 0;
+    }
+    .admin-input {
+      width: 100%;
+      height: 36px;
+      padding: 8px;
+      margin: 0;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      outline: 0;
+    }
+    .admin-button {
+      border: 0;
+      background-color: $color;
+      border-radius: 16px;
+      color: #fff;
+      cursor: pointer;
+      padding: 8px 32px;
+      width: auto;
+      &:disabled {
+        background-color: #aaa;
+        cursor: not-allowed;
+      }
+      &.admin-delete {
+        background-color: #000;
+      }
+    }
+  }
+}

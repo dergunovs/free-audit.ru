@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Главная</h1>
+    <h1>Список вопросов</h1>
   </div>
 </template>
 

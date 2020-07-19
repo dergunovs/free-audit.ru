@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Главная</h1>
+    <h1>Список аудитов</h1>
   </div>
 </template>
 

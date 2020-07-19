@@ -5,3 +5,18 @@
 
 Используемые технологии:
 Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB
+
+В корневой папке проекта нужно создать файл .env.
+Вписать токен для генерации JWT: TOKEN=xxx.
+Логин администратора: LOGIN=xxx.
+Пароль администратора: PASSWORD=xxx.
+
+Установка:
+npm install
+
+Запуск в режиме разработки:
+npm run dev
+
+Запуск в продакшене:
+npm run build
+npm start

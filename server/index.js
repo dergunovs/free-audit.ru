@@ -25,12 +25,10 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/user");
 const auditRoutes = require("./routes/audit");
 const questionRoutes = require("./routes/question");
 const resultRoutes = require("./routes/result");
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
 app.use("/api/audit", auditRoutes);
 app.use("/api/question", questionRoutes);
 app.use("/api/result", resultRoutes);
