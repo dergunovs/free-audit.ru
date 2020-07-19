@@ -9,20 +9,20 @@ Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB
 
 ### Установка
 
-npm install
+- npm install
 
 ### Запуск в режиме разработки
 
-npm run dev
+- npm run dev
 
 ### Запуск в продакшене
 
-npm run build
-npm start
+- npm run build
+- npm start
 
 ### Начало работы с приложением
 
-*В корневой папке проекта нужно создать файл .env.
-*Вписать токен для генерации JWT: TOKEN=xxx.
-*Логин администратора: LOGIN=xxx.
-*Пароль администратора: PASSWORD=xxx.
+- В корневой папке проекта нужно создать файл .env.
+- Вписать токен для генерации JWT: TOKEN=xxx.
+- Логин администратора: LOGIN=xxx.
+- Пароль администратора: PASSWORD=xxx.
