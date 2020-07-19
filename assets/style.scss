@@ -108,11 +108,14 @@ header {
   }
 }
 
-.admin-form {
+.form {
   display: flex;
   flex-wrap: wrap;
   z-index: 1;
   width: 100%;
+  &.form-center {
+    justify-content: center;
+  }
   .w100 {
     width: 100%;
   }
@@ -125,10 +128,10 @@ header {
   .w12 {
     width: 12.5%;
   }
-  .form-group {
+  .group {
     padding: 8px;
     box-sizing: border-box;
-    .form-error-message {
+    .error-message {
       display: block;
       height: 0;
       font-size: 12px;
@@ -137,12 +140,7 @@ header {
       display: inline-block;
       margin-bottom: 2px;
     }
-    .admin-buttons-block {
-      display: flex;
-      justify-content: space-between;
-      margin: 8px 0;
-    }
-    .admin-input {
+    .input {
       width: 100%;
       height: 36px;
       padding: 8px;
@@ -153,7 +151,7 @@ header {
       font-size: 14px;
       outline: 0;
     }
-    .admin-button {
+    .button {
       border: 0;
       background-color: $color;
       border-radius: 16px;
@@ -165,7 +163,7 @@ header {
         background-color: #aaa;
         cursor: not-allowed;
       }
-      &.admin-delete {
+      &.delete {
         background-color: #000;
       }
     }

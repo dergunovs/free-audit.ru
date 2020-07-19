@@ -14,7 +14,7 @@ const auditSchema = new mongoose.Schema({
   questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Questions"
+      ref: "Question"
     }
   ],
   date_created: {

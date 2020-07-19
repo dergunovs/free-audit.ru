@@ -1,13 +1,50 @@
 <template>
   <div>
-    <h1>Главная</h1>
+    <h1>Бесплатный онлайн аудит сайта</h1>
+    <ValidationObserver class="form form-center" v-slot="{ invalid }" tag="div">
+      <ValidationProvider rules="required" v-slot="{ errors }" class="group w12" tag="div">
+        <select v-model="type" class="input">
+          <option value="">Выбрать тип аудита</option>
+          <option value="Технический аудит">Технический аудит</option>
+        </select>
+        <span class="error-message">{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider
+        :rules="{
+          required: true,
+          regex: /^([\w\.а-яёА-ЯЁ-]+)\.([a-zA-Zа-яёА-ЯЁ-]{2,6}\.?)(\/[\w\.]*)*\/?$/
+        }"
+        v-slot="{ errors }"
+        class="group w25"
+        tag="div"
+      >
+        <input type="text" v-model="url" placeholder="Введите адрес сайта без http или https" class="input" />
+        <span class="error-message">{{ errors[0] }}</span>
+      </ValidationProvider>
+      <div class="group w12">
+        <button v-on:click="auditStart" :disabled="invalid" class="input button">Начать аудит</button>
+      </div>
+    </ValidationObserver>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
-  data: () => ({})
+  data: () => ({
+    type: "",
+    url: ""
+  }),
+  components: {
+    ValidationProvider,
+    ValidationObserver
+  },
+  methods: {
+    auditStart() {
+      console.log("Начало аудита.");
+    }
+  }
 };
 </script>

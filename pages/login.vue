@@ -1,19 +1,19 @@
 <template>
   <div>
     <h1>Войти в админку</h1>
-    <div class="admin-form">
-      <div class="form-group w25">
+    <div class="form">
+      <div class="group w25">
         <label for="login">Логин</label>
-        <input type="text" name="login" v-model="login.user" class="admin-input" />
+        <input type="text" name="login" v-model="login.user" class="input" />
       </div>
-      <div class="form-group w25">
+      <div class="group w25">
         <label for="password">Пароль</label>
-        <input type="password" name="password" v-model="login.password" class="admin-input" />
+        <input type="password" name="password" v-model="login.password" class="input" />
       </div>
     </div>
-    <div class="admin-form">
-      <div class="form-group w12">
-        <input type="submit" v-on:click="userLogin" value="Войти" class="admin-input admin-button " />
+    <div class="form">
+      <div class="group w12">
+        <input type="submit" v-on:click="userLogin" value="Войти" class="input button " />
       </div>
     </div>
   </div>

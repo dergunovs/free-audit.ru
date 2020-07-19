@@ -9,6 +9,8 @@ Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB.
 
 ### Установка
 
+Предварительно нужно установить Node.js и MongoDB.
+
 ```bash
 npm install
 ```

@@ -1,18 +1,11 @@
 import Vue from "vue";
 import { ValidationProvider, extend } from "vee-validate";
 
-import {
-  required,
-  alpha_dash,
-  alpha_spaces,
-  max,
-  min,
-  email
-} from "vee-validate/dist/rules";
+import { required, alpha_dash, alpha_spaces, max, min, email, regex } from "vee-validate/dist/rules";
 
 extend("required", {
   ...required,
-  message: "Пожалуйста, заполните это поле"
+  message: "Заполните это поле"
 });
 extend("alpha_dash", {
   ...alpha_dash,
@@ -34,6 +27,9 @@ extend("email", {
   ...email,
   message: "Введите корректный email"
 });
-
+extend("regex", {
+  ...regex,
+  message: "Введите корректный адрес сайта"
+});
 
 Vue.component("ValidationProvider", ValidationProvider);
