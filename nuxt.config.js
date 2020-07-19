@@ -15,7 +15,7 @@ module.exports = {
     meta: [
       { charset: "utf-8" },
       { name: "theme-color", content: "#000000" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1" }
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
   },
@@ -54,18 +54,11 @@ module.exports = {
           user: { propertyName: false }
         }
       }
-    },
-    redirect: {
-      login: "/login",
-      logout: "/login",
-      callback: "/login",
-      home: "/"
     }
   },
 
   build: {
     transpile: ["vee-validate/dist/rules"],
-    extend(config, ctx) {
-    }
+    extend(config, ctx) {}
   }
 };

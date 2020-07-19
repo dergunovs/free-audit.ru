@@ -1,5 +1,6 @@
 <template>
   <div>
+    <p>Всё работает!</p>
   </div>
 </template>
 
@@ -8,5 +9,5 @@ import axios from "axios";
 
 export default {
   data: () => ({})
-  }
+};
 </script>
