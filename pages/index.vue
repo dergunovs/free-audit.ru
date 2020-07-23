@@ -5,7 +5,7 @@
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w12" tag="div">
         <select v-model="type" class="input">
           <option value="">Выбрать тип аудита</option>
-          <option value="Технический аудит">Технический аудит</option>
+          <option v-for="audit in audits" :key="audit.index" :value="audit._id">{{ audit.name }}</option>
         </select>
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
@@ -37,13 +37,27 @@ export default {
     type: "",
     url: ""
   }),
+  async asyncData(app) {
+    try {
+      const { data } = await axios.get(`${process.env.baseUrl}/api/audit/`, {
+        headers: {
+          Authorization: app.$auth.$storage._state["_token.local"]
+        }
+      });
+      return { audits: data };
+    } catch (err) {
+      if (err.response.status === 403) {
+        $nuxt.$auth.logout();
+      }
+    }
+  },
   components: {
     ValidationProvider,
     ValidationObserver
   },
   methods: {
     auditStart() {
-      console.log("Начало аудита.");
+      console.log("Начало аудита");
     }
   }
 };

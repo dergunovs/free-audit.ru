@@ -5,13 +5,13 @@
       <div class="group w12 button-bottom">
         <nuxt-link to="/question/create" class="input">Создать</nuxt-link>
       </div>
-      <div class="questions-block" v-if="questions">
-        <div v-for="question in questions" :key="question.index" class="question">
-          <nuxt-link :to="`/question/${question._id}`">
-            {{ question.name }}
-          </nuxt-link>
-          {{ question.level }}
-        </div>
+    </div>
+    <div class="list-block" v-if="questions">
+      <div v-for="question in questions" :key="question.index" class="list-item">
+        <nuxt-link :to="`/question/${question._id}`" class="list-item-link">
+          {{ question.name }}
+        </nuxt-link>
+        <div class="list-item-text" v-html="question.introtext"></div>
       </div>
     </div>
   </div>

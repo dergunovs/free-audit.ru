@@ -49,7 +49,7 @@ p {
 h1 {
   font-size: 24px;
   text-align: center;
-  margin-top: 64px;
+  margin-top: 80px;
   margin-bottom: 16px;
 }
 h2 {
@@ -166,6 +166,19 @@ header {
       &.delete {
         background-color: #000;
       }
+    }
+  }
+}
+
+.list-block {
+  margin: 16px 0;
+  .list-item {
+    margin-bottom: 16px;
+    .list-item-link {
+      font-size: 18px;
+    }
+    .list-item-text {
+      line-height: 1.2;
     }
   }
 }

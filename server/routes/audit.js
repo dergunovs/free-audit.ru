@@ -4,48 +4,26 @@ const jwt = require("jsonwebtoken");
 const Audit = require("../model/audit");
 
 router.get("/", async (req, res) => {
-  if (req.headers.authorization === undefined) {
-    res.status(403).json({ message: "Токен не распознан" });
-  } else {
-    const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
-      if (err) {
-        res.status(403).json({ message: "Токен неправильный" });
-      } else {
-        try {
-          const audits = await Audit.find()
-            .select("_id name introtext")
-            .sort("name")
-            .lean()
-            .exec();
-          res.json(audits);
-        } catch (err) {
-          res.status(500).json({ message: err.message });
-        }
-      }
-    });
+  try {
+    const audits = await Audit.find()
+      .select("_id name introtext")
+      .sort("name")
+      .lean()
+      .exec();
+    res.json(audits);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
 router.get("/:id", getAudit, (req, res) => {
-  if (req.headers.authorization === undefined) {
-    res.status(403).json({ message: "Токен не распознан" });
-  } else {
-    const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
-      if (err) {
-        res.status(403).json({ message: "Токен неправильный" });
-      } else {
-        res.json({
-          _id: res.audit._id,
-          name: res.audit.name,
-          introtext: res.audit.introtext,
-          conclusion: res.audit.conclusion,
-          date_created: res.audit.date_created
-        });
-      }
-    });
-  }
+  res.json({
+    _id: res.audit._id,
+    name: res.audit.name,
+    introtext: res.audit.introtext,
+    conclusion: res.audit.conclusion,
+    date_created: res.audit.date_created
+  });
 });
 
 router.post("/", async (req, res) => {

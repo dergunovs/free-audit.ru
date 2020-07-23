@@ -20,10 +20,10 @@
       </ValidationProvider>
 
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
-        <label for="text">Вступление</label>
+        <label for="introtext">Вступление</label>
         <Editor
           api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
-          v-model="text"
+          v-model="introtext"
           :init="{
             height: 270,
             menubar: true,
@@ -59,7 +59,7 @@ export default {
   layout: "admin",
   data: () => ({
     name: "",
-    text: "",
+    introtext: "",
     level: "",
     date_created: "",
     date_formatted: ""
@@ -87,7 +87,7 @@ export default {
     questionUpdate() {
       let formData = {
         name: this.name,
-        text: this.text,
+        introtext: this.introtext,
         level: this.level
       };
       axios
@@ -98,7 +98,7 @@ export default {
         })
         .then(response => {
           this.question.name = response.data.name;
-          this.question.text = response.data.text;
+          this.question.introtext = response.data.introtext;
           this.question.level = response.data.level;
           this.$toast.success("Готово", { duration: 1000 });
         })
@@ -122,7 +122,7 @@ export default {
   },
   mounted() {
     this.name = this.question.name;
-    this.text = this.question.text;
+    this.introtext = this.question.introtext;
     this.level = this.question.level;
     let createdDate = new Date(this.question.date_created);
     this.date_formatted =

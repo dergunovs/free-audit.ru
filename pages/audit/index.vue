@@ -5,13 +5,13 @@
       <div class="group w12 button-bottom">
         <nuxt-link to="/audit/create" class="input">Создать</nuxt-link>
       </div>
-      <div class="audits-block" v-if="audits">
-        <div v-for="audit in audits" :key="audit.index" class="audit">
-          <nuxt-link :to="`/audit/${audit._id}`">
-            {{ audit.name }}
-          </nuxt-link>
-          <div v-html="audit.introtext"></div>
-        </div>
+    </div>
+    <div class="list-block" v-if="audits">
+      <div v-for="audit in audits" :key="audit.index" class="list-item">
+        <nuxt-link :to="`/audit/${audit._id}`" class="list-item-link">
+          {{ audit.name }}
+        </nuxt-link>
+        <div class="list-item-text" v-html="audit.introtext"></div>
       </div>
     </div>
   </div>

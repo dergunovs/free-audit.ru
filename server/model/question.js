@@ -5,7 +5,7 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  text: {
+  introtext: {
     type: String,
     required: true
   },

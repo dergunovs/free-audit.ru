@@ -19,10 +19,10 @@
       </ValidationProvider>
 
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
-        <label for="text">Вступление</label>
+        <label for="introtext">Вступление</label>
         <Editor
           api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
-          v-model="text"
+          v-model="introtext"
           :init="{
             height: 270,
             menubar: true,
@@ -54,7 +54,7 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 export default {
   data: () => ({
     name: "",
-    text: "",
+    introtext: "",
     level: ""
   }),
   components: {
@@ -66,7 +66,7 @@ export default {
     questionCreate() {
       let formData = {
         name: this.name,
-        text: this.text,
+        introtext: this.introtext,
         level: this.level
       };
       axios
