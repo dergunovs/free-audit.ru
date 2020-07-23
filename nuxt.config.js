@@ -35,7 +35,7 @@ module.exports = {
   axios: { proxy: true },
 
   proxy: {
-    "/api/": "http://free-audit.ru"
+    "/api/": "http://localhost:3000"
   },
 
   auth: {

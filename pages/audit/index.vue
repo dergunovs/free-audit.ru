@@ -22,14 +22,11 @@ import axios from "axios";
 
 export default {
   layout: "admin",
-  data: () => ({
-    audits: []
-  }),
-  async asyncData($nuxt) {
+  async asyncData(app) {
     try {
       const { data } = await axios.get(`${process.env.baseUrl}/api/audit/`, {
         headers: {
-          Authorization: $nuxt.$auth.$storage._state["_token.local"]
+          Authorization: app.$auth.$storage._state["_token.local"]
         }
       });
       return { audits: data };
