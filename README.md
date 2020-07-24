@@ -5,11 +5,11 @@
 
 ## Используемые технологии
 
-Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB.
+Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB. Рекомендуемый редактор VS Code + Prettier.
 
 ### Установка
 
-Предварительно нужно установить Node.js и MongoDB.
+Предварительно нужно установить Node.js и MongoDB. Затем в консоли прописать:
 
 ```bash
 npm install
@@ -34,3 +34,11 @@ npm start
 - Вписать secret для генерации JWT: SECRET=xxx.
 - Логин администратора: LOGIN=xxx.
 - Пароль администратора: PASSWORD=xxx.
+
+Например:
+
+```bash
+SECRET=g0hv3003ubhgv3g3tg
+LOGIN=admin
+PASSWORD=gnm90ubne
+```
