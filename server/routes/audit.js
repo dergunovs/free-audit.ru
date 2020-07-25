@@ -22,6 +22,7 @@ router.get("/:id", getAudit, (req, res) => {
     name: res.audit.name,
     introtext: res.audit.introtext,
     conclusion: res.audit.conclusion,
+    questions: res.audit.questions,
     date_created: res.audit.date_created
   });
 });
@@ -63,12 +64,14 @@ router.patch("/:id", getAudit, async (req, res) => {
         res.audit.name = req.body.name;
         res.audit.introtext = req.body.introtext;
         res.audit.conclusion = req.body.conclusion;
+        res.audit.questions = req.body.questions;
         try {
           await res.audit.save();
           res.status(200).json({
             name: res.audit.name,
             introtext: res.audit.introtext,
-            conclusion: res.audit.conclusion
+            conclusion: res.audit.conclusion,
+            questions: res.audit.questions
           });
         } catch (err) {
           res.status(500).json({ message: err.message });
@@ -101,7 +104,10 @@ router.delete("/:id", getAudit, async (req, res) => {
 async function getAudit(req, res, next) {
   let audit;
   try {
-    audit = await Audit.findOne({ _id: req.params.id });
+    audit = await Audit.findOne({ _id: req.params.id }).populate({
+      path: "questions",
+      select: "_id name level introtext"
+    });
     if (audit == null) {
       return res.status(404).json({ message: "Нет такой страницы" });
     }

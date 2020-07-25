@@ -41,6 +41,27 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
+      <div class="group w50">
+        <label for="questions">Текущие вопросы</label>
+        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false" id="questions">
+          <div v-for="question in questions" :key="question.index" class="question-draggable">
+            <div class="question-name">{{ question.name }}</div>
+            <div>Уровень: {{ question.level }}</div>
+            <div v-html="question.introtext"></div>
+          </div>
+        </draggable>
+      </div>
+      <div class="group w50">
+        <label for="questionsList">Список вопросов</label>
+        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false" id="qustionsList">
+          <div v-for="question in questionsList" :key="question.index" class="question-draggable">
+            <div class="question-name">{{ question.name }}</div>
+            <div>Уровень: {{ question.level }}</div>
+            <div v-html="question.introtext"></div>
+          </div>
+        </draggable>
+      </div>
+
       <div class="group w100">
         <div class="buttons-block">
           <button class="input button" :disabled="invalid" v-on:click="auditUpdate">
@@ -60,6 +81,7 @@ import axios from "axios";
 
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
+import draggable from "vuedraggable";
 
 export default {
   layout: "admin",
@@ -68,7 +90,9 @@ export default {
     introtext: "",
     conclusion: "",
     date_created: "",
-    date_formatted: ""
+    date_formatted: "",
+    questions: [],
+    questionsList: []
   }),
   async asyncData({ params, app }) {
     try {
@@ -77,7 +101,12 @@ export default {
           Authorization: app.$auth.$storage._state["_token.local"]
         }
       });
-      return { audit: data.data };
+      const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`, {
+        headers: {
+          Authorization: app.$auth.$storage._state["_token.local"]
+        }
+      });
+      return { audit: data.data, questionsList: questionsList.data };
     } catch (err) {
       if (err.response.status === 403) {
         $nuxt.$auth.logout();
@@ -87,14 +116,16 @@ export default {
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    draggable
   },
   methods: {
     auditUpdate() {
       let formData = {
         name: this.name,
         introtext: this.introtext,
-        conclusion: this.conclusion
+        conclusion: this.conclusion,
+        questions: this.questions
       };
       axios
         .patch(`${process.env.baseUrl}/api/audit/${this.audit._id}`, formData, {
@@ -106,6 +137,7 @@ export default {
           this.audit.name = response.data.name;
           this.audit.introtext = response.data.introtext;
           this.audit.conclusion = response.data.conclusion;
+          this.audit.questions = response.data.questions;
           this.$toast.success("Готово", { duration: 1000 });
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
@@ -130,6 +162,7 @@ export default {
     this.name = this.audit.name;
     this.introtext = this.audit.introtext;
     this.conclusion = this.audit.conclusion;
+    this.questions = this.audit.questions;
     let createdDate = new Date(this.audit.date_created);
     this.date_formatted =
       createdDate.getDate() + "." + (createdDate.getMonth() + 1) + "." + createdDate.getFullYear() + " г.";

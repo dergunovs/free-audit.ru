@@ -30,6 +30,7 @@
     "path": "^0.12.7",
     "vee-validate": "^3.3.7",
     "vue-multiselect": "^2.1.6",
+    "vuedraggable": "^2.24.0",
     "web-streams-polyfill": "^2.1.1"
   },
   "devDependencies": {

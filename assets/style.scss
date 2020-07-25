@@ -167,6 +167,20 @@ header {
         background-color: #000;
       }
     }
+    .question-draggable {
+      border-top: 1px solid #ccc;
+      border-left: 1px solid #ccc;
+      border-right: 1px solid #ccc;
+      padding: 16px;
+      box-sizing: border-box;
+      .question-name {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      &:last-child {
+        border-bottom: 1px solid #ccc;
+      }
+    }
   }
 }
 
