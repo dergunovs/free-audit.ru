@@ -166,8 +166,8 @@ export default {
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     updateList() {
-      let questionsIds = this.questions.map(itemY => {
-        return itemY._id;
+      let questionsIds = this.questions.map(item => {
+        return item._id;
       });
       this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
     }
@@ -177,8 +177,8 @@ export default {
     this.introtext = this.audit.introtext;
     this.conclusion = this.audit.conclusion;
     this.questions = this.audit.questions;
-    let questionsIds = this.questions.map(itemY => {
-      return itemY._id;
+    let questionsIds = this.questions.map(item => {
+      return item._id;
     });
     this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
     let createdDate = new Date(this.audit.date_created);
