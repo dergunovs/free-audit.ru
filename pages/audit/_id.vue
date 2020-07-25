@@ -43,7 +43,13 @@
 
       <div class="group w50">
         <label for="questions">Текущие вопросы</label>
-        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false" id="questions">
+        <draggable
+          v-model="questions"
+          group="questions"
+          @start="drag = true"
+          @end="(drag = false), updateList"
+          id="questions"
+        >
           <div v-for="question in questions" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>Уровень: {{ question.level }}</div>
@@ -53,7 +59,13 @@
       </div>
       <div class="group w50">
         <label for="questionsList">Список вопросов</label>
-        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false" id="qustionsList">
+        <draggable
+          v-model="questionsList"
+          group="questions"
+          @start="drag = true"
+          @end="(drag = false), updateList"
+          id="qustionsList"
+        >
           <div v-for="question in questionsList" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>Уровень: {{ question.level }}</div>
@@ -101,11 +113,7 @@ export default {
           Authorization: app.$auth.$storage._state["_token.local"]
         }
       });
-      const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`, {
-        headers: {
-          Authorization: app.$auth.$storage._state["_token.local"]
-        }
-      });
+      const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`);
       return { audit: data.data, questionsList: questionsList.data };
     } catch (err) {
       if (err.response.status === 403) {
@@ -156,6 +164,12 @@ export default {
           this.$toast.success("Готово", { duration: 1000 })
         )
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
+    updateList() {
+      let questionsIds = this.questions.map(itemY => {
+        return itemY._id;
+      });
+      this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
     }
   },
   mounted() {
@@ -163,6 +177,10 @@ export default {
     this.introtext = this.audit.introtext;
     this.conclusion = this.audit.conclusion;
     this.questions = this.audit.questions;
+    let questionsIds = this.questions.map(itemY => {
+      return itemY._id;
+    });
+    this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
     let createdDate = new Date(this.audit.date_created);
     this.date_formatted =
       createdDate.getDate() + "." + (createdDate.getMonth() + 1) + "." + createdDate.getFullYear() + " г.";

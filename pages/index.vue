@@ -39,16 +39,10 @@ export default {
   }),
   async asyncData(app) {
     try {
-      const { data } = await axios.get(`${process.env.baseUrl}/api/audit/`, {
-        headers: {
-          Authorization: app.$auth.$storage._state["_token.local"]
-        }
-      });
+      const { data } = await axios.get(`${process.env.baseUrl}/api/audit/`);
       return { audits: data };
     } catch (err) {
-      if (err.response.status === 403) {
-        $nuxt.$auth.logout();
-      }
+      console.log(err);
     }
   },
   components: {
