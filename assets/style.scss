@@ -184,6 +184,13 @@ header {
   }
 }
 
+.tag-list {
+  padding: 8px;
+  .tag {
+    padding: 4px;
+  }
+}
+
 .list-block {
   margin: 16px 0;
   .list-item {

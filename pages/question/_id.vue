@@ -2,6 +2,12 @@
   <div>
     <h1>{{ question.name }}</h1>
     <div class="text-center">Дата создания {{ date_formatted }}</div>
+    <div class="tag-list" v-if="audits.length">
+      Используется в аудитах:
+      <span v-for="audit in audits" :key="audit.index" class="tag">
+        <nuxt-link :to="`/audit/${audit._id}`">{{ audit.name }}</nuxt-link>
+      </span>
+    </div>
     <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
       <ValidationProvider rules="required|min:3|max:20" v-slot="{ errors }" class="group w50" tag="div">
         <label for="name">Название вопроса</label>
@@ -67,7 +73,8 @@ export default {
   async asyncData({ params }) {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`);
-      return { question: data.data };
+      const audits = await axios.get(`${process.env.baseUrl}/api/audit/question/${params.id}`);
+      return { question: data.data, audits: audits.data };
     } catch (err) {
       if (err.response.status === 403) {
         $nuxt.$auth.logout();

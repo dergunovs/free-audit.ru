@@ -27,6 +27,19 @@ router.get("/:id", getAudit, (req, res) => {
   });
 });
 
+router.get("/question/:id", async (req, res) => {
+  try {
+    const audits = await Audit.find({ questions: req.params.id })
+      .select("_id name")
+      .sort("name")
+      .lean()
+      .exec();
+    res.json(audits);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 router.post("/", async (req, res) => {
   if (req.headers.authorization === undefined) {
     res.status(403).json({ message: "Токен не распознан" });
