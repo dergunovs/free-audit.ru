@@ -216,8 +216,10 @@ export default {
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     updateAnswers(answersUpdated) {
-      this.question.answers = answersUpdated;
-      this.showAnswerAdd = false;
+      setTimeout(() => {
+        this.question.answers = answersUpdated;
+      }, 500),
+        (this.showAnswerAdd = false);
     }
   },
   mounted() {
