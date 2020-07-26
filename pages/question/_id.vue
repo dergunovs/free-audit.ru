@@ -57,59 +57,61 @@
 
     <answerAdd v-if="showAnswerAdd" :questionId="question._id" @answerCreate="updateAnswers" />
 
-    <ValidationObserver
-      v-for="answer in question.answers"
-      :key="answer.index"
-      class="form"
-      v-slot="{ invalid }"
-      tag="div"
-    >
-      <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
-        <label :for="`introtext${answer._id}`">Текст ответа</label>
-        <input
-          type="text"
-          v-model="answer.introtext"
-          class="input"
-          :ref="`introtext${answer._id}`"
-          :id="`introtext${answer._id}`"
-        />
-        <span class="error-message">{{ errors[0] }}</span>
-      </ValidationProvider>
+    <div class="answers-block">
+      <ValidationObserver
+        v-for="answer in question.answers"
+        :key="answer.index"
+        class="form form-half-width"
+        v-slot="{ invalid }"
+        tag="div"
+      >
+        <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
+          <label :for="`introtext${answer._id}`">Текст ответа</label>
+          <input
+            type="text"
+            v-model="answer.introtext"
+            class="input"
+            :ref="`introtext${answer._id}`"
+            :id="`introtext${answer._id}`"
+          />
+          <span class="error-message">{{ errors[0] }}</span>
+        </ValidationProvider>
 
-      <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
-        <label :for="`recomendation${answer._id}`">Рекомендация</label>
-        <Editor
-          api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
-          v-model="answer.recomendation"
-          :ref="`recomendation${answer._id}`"
-          :id="`recomendation${answer._id}`"
-          :init="{
-            height: 270,
-            menubar: true,
-            language: 'ru',
-            plugins: ['autolink lists link visualblocks code table paste'],
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist'
-          }"
-        />
-        <span class="error-message">{{ errors[0] }}</span>
-      </ValidationProvider>
+        <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
+          <label :for="`recomendation${answer._id}`">Рекомендация</label>
+          <Editor
+            api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
+            v-model="answer.recomendation"
+            :ref="`recomendation${answer._id}`"
+            :id="`recomendation${answer._id}`"
+            :init="{
+              height: 270,
+              menubar: true,
+              language: 'ru',
+              plugins: ['autolink lists link visualblocks code table paste'],
+              toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist'
+            }"
+          />
+          <span class="error-message">{{ errors[0] }}</span>
+        </ValidationProvider>
 
-      <div class="group w100">
-        <div class="buttons-block">
-          <button
-            class="input button"
-            :disabled="invalid"
-            v-on:click="answerUpdate(answer)"
-            :ref="`update${answer._id}`"
-          >
-            Обновить
-          </button>
-          <button class="input button delete" v-on:click="answerDelete(answer)">
-            Удалить
-          </button>
+        <div class="group w100">
+          <div class="buttons-block">
+            <button
+              class="input button"
+              :disabled="invalid"
+              v-on:click="answerUpdate(answer)"
+              :ref="`update${answer._id}`"
+            >
+              Обновить
+            </button>
+            <button class="input button delete" v-on:click="answerDelete(answer)">
+              Удалить
+            </button>
+          </div>
         </div>
-      </div>
-    </ValidationObserver>
+      </ValidationObserver>
+    </div>
   </div>
 </template>
 

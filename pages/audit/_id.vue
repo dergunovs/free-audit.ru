@@ -50,7 +50,7 @@
             <div class="question-name">{{ question.name }}</div>
             <div>{{ question.level }}</div>
             <div v-html="question.introtext"></div>
-            <nuxt-link :to="`/question/${question._id}`" target="_blank">Редактировать</nuxt-link>
+            <nuxt-link :to="`/question/${question._id}`">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>

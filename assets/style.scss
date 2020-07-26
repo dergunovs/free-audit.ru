@@ -54,6 +54,12 @@ h1 {
 }
 h2 {
   font-size: 20px;
+  span {
+    cursor: pointer;
+    background-color: #eee;
+    padding: 0px 7px 3px 7px;
+    border-radius: 50%;
+  }
 }
 ol,
 ul {
@@ -113,6 +119,9 @@ header {
   flex-wrap: wrap;
   z-index: 1;
   width: 100%;
+  &.form-half-width {
+    width: 50%;
+  }
   &.form-center {
     justify-content: center;
   }
@@ -206,4 +215,9 @@ header {
       line-height: 1.2;
     }
   }
+}
+
+.answers-block {
+  display: flex;
+  flex-wrap: wrap;
 }

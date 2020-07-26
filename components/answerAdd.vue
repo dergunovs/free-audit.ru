@@ -1,6 +1,6 @@
 <template>
   <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
-    <ValidationProvider rules="required|min:5" v-slot="{ errors }" class="group w25" tag="div">
+    <ValidationProvider rules="required|min:5" v-slot="{ errors }" class="group w100" tag="div">
       <label for="answer-introtext-new">Текст ответа</label>
       <input id="answer-introtext-new" type="text" v-model="answer.introtext" class="input" />
       <span class="error-message">{{ errors[0] }}</span>
