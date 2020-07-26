@@ -22,7 +22,7 @@ import axios from "axios";
 
 export default {
   layout: "admin",
-  async asyncData(app) {
+  async asyncData() {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/audit/`);
       return { audits: data.data };

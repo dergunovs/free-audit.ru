@@ -64,7 +64,7 @@ export default {
     date_created: "",
     date_formatted: ""
   }),
-  async asyncData({ params, app }) {
+  async asyncData({ params }) {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`);
       return { question: data.data };

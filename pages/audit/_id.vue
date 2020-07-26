@@ -110,7 +110,7 @@ export default {
     questions: [],
     questionsList: []
   }),
-  async asyncData({ params, app }) {
+  async asyncData({ params }) {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/audit/${params.id}`);
       const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`);
