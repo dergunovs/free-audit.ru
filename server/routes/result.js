@@ -31,6 +31,15 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", getResult, (req, res) => {
+  res.json({
+    _id: res.result._id,
+    audit: res.result.audit,
+    url: res.result.url,
+    date_created: res.result.date_created
+  });
+});
+
 router.post("/", async (req, res) => {
   const result = new Result({
     audit: req.body.audit,
@@ -43,5 +52,19 @@ router.post("/", async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+async function getResult(req, res, next) {
+  let result;
+  try {
+    result = await Result.findOne({ _id: req.params.id });
+    if (result == null) {
+      return res.status(404).json({ message: "Нет такой страницы" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.result = result;
+  next();
+}
 
 module.exports = router;

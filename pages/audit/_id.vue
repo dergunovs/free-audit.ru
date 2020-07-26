@@ -163,8 +163,6 @@ export default {
       return item._id;
     });
     this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
-    let newDate = new Date(this.audit.date_created);
-    this.date_formatted = newDate.getDate() + "." + (newDate.getMonth() + 1) + "." + newDate.getFullYear() + " г.";
   }
 };
 </script>
