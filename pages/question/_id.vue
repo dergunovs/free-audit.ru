@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ question.name }}</h1>
-    <div class="text-center">Дата создания {{ date_formatted }}</div>
+    <div class="text-center">Дата создания {{ $dateFns.format(new Date(question.date_created), "dd.MM.yyyy г.") }}</div>
     <div class="tag-list" v-if="audits.length">
       Используется в аудитах:
       <span v-for="audit in audits" :key="audit.index" class="tag">
@@ -128,15 +128,17 @@ export default {
     introtext: "",
     level: "",
     date_created: "",
-    date_formatted: "",
     showAnswerAdd: false,
     answers: [{ introtext: "", recomendation: "" }]
   }),
-  async asyncData({ params }) {
+  async asyncData({ app, params }) {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`);
       const audits = await axios.get(`${process.env.baseUrl}/api/audit/question/${params.id}`);
-      return { question: data.data, audits: audits.data };
+      return {
+        question: data.data,
+        audits: audits.data
+      };
     } catch (err) {
       if (err.response.status === 403) {
         $nuxt.$auth.logout();
@@ -228,9 +230,6 @@ export default {
     this.name = this.question.name;
     this.introtext = this.question.introtext;
     this.level = this.question.level;
-    let createdDate = new Date(this.question.date_created);
-    this.date_formatted =
-      createdDate.getDate() + "." + (createdDate.getMonth() + 1) + "." + createdDate.getFullYear() + " г.";
   }
 };
 </script>

@@ -28,6 +28,8 @@ module.exports = {
 
   plugins: ["~plugins/vee-validate"],
 
+  buildModules: ["@nuxtjs/date-fns"],
+
   dateFns: { defaultLocale: "ru" },
 
   modules: ["@nuxtjs/axios", "@nuxt/http", "@nuxtjs/auth", "@nuxtjs/toast"],

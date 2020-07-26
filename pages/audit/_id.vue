@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ audit.name }}</h1>
-    <div class="text-center">Дата создания {{ date_formatted }}</div>
+    <div class="text-center">Дата создания {{ $dateFns.format(new Date(audit.date_created), "dd.MM.yyyy г.") }}</div>
     <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
       <ValidationProvider rules="required|min:3|max:20" v-slot="{ errors }" class="group w100" tag="div">
         <label for="name">Название аудита</label>
@@ -163,9 +163,8 @@ export default {
       return item._id;
     });
     this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
-    let createdDate = new Date(this.audit.date_created);
-    this.date_formatted =
-      createdDate.getDate() + "." + (createdDate.getMonth() + 1) + "." + createdDate.getFullYear() + " г.";
+    let newDate = new Date(this.audit.date_created);
+    this.date_formatted = newDate.getDate() + "." + (newDate.getMonth() + 1) + "." + newDate.getFullYear() + " г.";
   }
 };
 </script>

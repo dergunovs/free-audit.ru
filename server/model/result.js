@@ -3,17 +3,15 @@ const mongoose = require("mongoose");
 const resultSchema = new mongoose.Schema({
   audit: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Audit"
+    ref: "Audit",
+    required: true
   },
-  questions: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Questions"
-    }
-  ],
-  email: {
+  url: {
     type: String,
     required: true
+  },
+  email: {
+    type: String
   },
   password: {
     type: String

@@ -3,7 +3,7 @@
     <h1>Бесплатный онлайн аудит сайта</h1>
     <ValidationObserver class="form form-center" v-slot="{ invalid }" tag="div">
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w12" tag="div">
-        <select v-model="type" class="input">
+        <select v-model="audit" class="input">
           <option value="">Выбрать тип аудита</option>
           <option v-for="audit in audits" :key="audit.index" :value="audit._id">{{ audit.name }}</option>
         </select>
@@ -18,11 +18,11 @@
         class="group w25"
         tag="div"
       >
-        <input type="text" v-model="url" placeholder="Введите адрес сайта без http или https" class="input" />
+        <input type="text" v-model="url" placeholder="Введите адрес сайта без www, http или https" class="input" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
       <div class="group w12">
-        <button v-on:click="auditStart" :disabled="invalid" class="input button">Начать аудит</button>
+        <button v-on:click="resultCreate" :disabled="invalid" class="input button">Начать аудит</button>
       </div>
     </ValidationObserver>
   </div>
@@ -34,7 +34,7 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
   data: () => ({
-    type: "",
+    audit: "",
     url: ""
   }),
   async asyncData() {
@@ -50,8 +50,17 @@ export default {
     ValidationObserver
   },
   methods: {
-    auditStart() {
-      console.log("Начало аудита");
+    resultCreate() {
+      let formData = {
+        audit: this.audit,
+        url: this.url
+      };
+      axios
+        .post(`${process.env.baseUrl}/api/result`, formData)
+        .then(response => {
+          this.$toast.success("Готово", { duration: 1000 });
+        })
+        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
   }
 };
