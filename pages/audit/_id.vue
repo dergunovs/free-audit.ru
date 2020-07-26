@@ -45,13 +45,7 @@
 
       <div class="group w50">
         <label for="questions">Текущие</label>
-        <draggable
-          v-model="questions"
-          group="questions"
-          @start="drag = true"
-          @end="(drag = false), updateList"
-          id="questions"
-        >
+        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false" id="questions">
           <div v-for="question in questions" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>{{ question.level }}</div>
@@ -62,13 +56,7 @@
       </div>
       <div class="group w50">
         <label for="questionsList">Список</label>
-        <draggable
-          v-model="questionsList"
-          group="questions"
-          @start="drag = true"
-          @end="(drag = false), updateList"
-          id="qustionsList"
-        >
+        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false" id="qustionsList">
           <div v-for="question in questionsList" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>{{ question.level }}</div>
@@ -164,12 +152,6 @@ export default {
           this.$toast.success("Готово", { duration: 1000 })
         )
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    },
-    updateList() {
-      let questionsIds = this.questions.map(item => {
-        return item._id;
-      });
-      this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
     }
   },
   mounted() {

@@ -14,8 +14,8 @@ const questionSchema = new mongoose.Schema({
   },
   answers: [
     {
-      type: { type: String, required: true },
-      text: { type: String, required: true }
+      introtext: { type: String, required: true },
+      recomendation: { type: String, required: true }
     }
   ],
   date_created: {

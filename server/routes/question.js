@@ -22,7 +22,8 @@ router.get("/:id", getQuestion, (req, res) => {
     name: res.question.name,
     introtext: res.question.introtext,
     level: res.question.level,
-    date_created: res.question.date_created
+    date_created: res.question.date_created,
+    answers: res.question.answers
   });
 });
 
@@ -70,6 +71,91 @@ router.patch("/:id", getQuestion, async (req, res) => {
             introtext: res.question.introtext,
             level: res.question.level
           });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      }
+    });
+  }
+});
+
+router.post("/:id/answer", async (req, res) => {
+  if (req.headers.authorization === undefined) {
+    res.status(403).json({ message: "Токен не распознан" });
+  } else {
+    const token = req.headers.authorization.split("Bearer ")[1];
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) {
+        res.status(403).json({ message: "Токен неправильный" });
+      } else {
+        const newAnswer = {
+          introtext: req.body.introtext,
+          recomendation: req.body.recomendation
+        };
+        res.question = await Question.findOneAndUpdate(
+          { _id: req.params.id },
+          { $push: { answers: newAnswer } },
+          { returnOriginal: false }
+        );
+        try {
+          await res.question.save();
+          res.status(201).json({ answers: res.question.answers });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      }
+    });
+  }
+});
+
+router.patch("/:id/answer", async (req, res) => {
+  if (req.headers.authorization === undefined) {
+    res.status(403).json({ message: "Токен не распознан" });
+  } else {
+    const token = req.headers.authorization.split("Bearer ")[1];
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) {
+        res.status(403).json({ message: "Токен неправильный" });
+      } else {
+        res.question = await Question.findOneAndUpdate(
+          { _id: req.params.id, "answers._id": req.body.answerId },
+          {
+            $set: {
+              "answers.$.introtext": req.body.answerIntrotext,
+              "answers.$.recomendation": req.body.answerRecomendation
+            }
+          },
+          { returnOriginal: false }
+        );
+        try {
+          await res.question.save();
+          res.status(201).json({ answers: res.question.answers });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      }
+    });
+  }
+});
+
+router.delete("/:id/answer", async (req, res) => {
+  if (req.headers.authorization === undefined) {
+    res.status(403).json({ message: "Токен не распознан" });
+  } else {
+    const token = req.headers.authorization.split("Bearer ")[1];
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) {
+        res.status(403).json({ message: "Токен неправильный" });
+      } else {
+        let DeletedAnswer = { _id: req.body.answerId };
+        res.question = await Question.findOneAndUpdate(
+          { _id: req.params.id },
+          { $pull: { answers: DeletedAnswer } },
+          { returnOriginal: false }
+        );
+        try {
+          await res.question.save();
+          res.status(200).json({ answers: res.question.answers });
         } catch (err) {
           res.status(500).json({ message: err.message });
         }

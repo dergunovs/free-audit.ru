@@ -187,7 +187,11 @@ header {
 .tag-list {
   padding: 8px;
   .tag {
-    padding: 4px;
+    margin: 4px;
+    a {
+      padding: 4px;
+      background-color: #eee;
+    }
   }
 }
 
