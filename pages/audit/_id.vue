@@ -41,8 +41,10 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
+      <h2 class="group w100">Вопросы</h2>
+
       <div class="group w50">
-        <label for="questions">Текущие вопросы</label>
+        <label for="questions">Текущие</label>
         <draggable
           v-model="questions"
           group="questions"
@@ -52,13 +54,14 @@
         >
           <div v-for="question in questions" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
-            <div>Уровень: {{ question.level }}</div>
+            <div>{{ question.level }}</div>
             <div v-html="question.introtext"></div>
+            <nuxt-link :to="`/question/${question._id}`" target="_blank">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>
       <div class="group w50">
-        <label for="questionsList">Список вопросов</label>
+        <label for="questionsList">Список</label>
         <draggable
           v-model="questionsList"
           group="questions"
@@ -68,8 +71,9 @@
         >
           <div v-for="question in questionsList" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
-            <div>Уровень: {{ question.level }}</div>
+            <div>{{ question.level }}</div>
             <div v-html="question.introtext"></div>
+            <nuxt-link :to="`/question/${question._id}`" target="_blank">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>
@@ -108,11 +112,7 @@ export default {
   }),
   async asyncData({ params, app }) {
     try {
-      const data = await axios.get(`${process.env.baseUrl}/api/audit/${params.id}`, {
-        headers: {
-          Authorization: app.$auth.$storage._state["_token.local"]
-        }
-      });
+      const data = await axios.get(`${process.env.baseUrl}/api/audit/${params.id}`);
       const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`);
       return { audit: data.data, questionsList: questionsList.data };
     } catch (err) {

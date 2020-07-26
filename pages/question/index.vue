@@ -24,12 +24,8 @@ export default {
   layout: "admin",
   async asyncData(app) {
     try {
-      const { data } = await axios.get(`${process.env.baseUrl}/api/question/`, {
-        headers: {
-          Authorization: app.$auth.$storage._state["_token.local"]
-        }
-      });
-      return { questions: data };
+      const data = await axios.get(`${process.env.baseUrl}/api/question/`);
+      return { questions: data.data };
     } catch (err) {
       if (err.response.status === 403) {
         $nuxt.$auth.logout();

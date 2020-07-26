@@ -66,11 +66,7 @@ export default {
   }),
   async asyncData({ params, app }) {
     try {
-      const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`, {
-        headers: {
-          Authorization: app.$auth.$storage._state["_token.local"]
-        }
-      });
+      const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`);
       return { question: data.data };
     } catch (err) {
       if (err.response.status === 403) {

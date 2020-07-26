@@ -39,8 +39,8 @@ export default {
   }),
   async asyncData(app) {
     try {
-      const { data } = await axios.get(`${process.env.baseUrl}/api/audit/`);
-      return { audits: data };
+      const data = await axios.get(`${process.env.baseUrl}/api/audit/`);
+      return { audits: data.data };
     } catch (err) {
       console.log(err);
     }
