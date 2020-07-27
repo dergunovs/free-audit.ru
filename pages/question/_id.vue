@@ -66,14 +66,8 @@
         tag="div"
       >
         <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
-          <label :for="`introtext${answer._id}`">Текст ответа</label>
-          <input
-            type="text"
-            v-model="answer.introtext"
-            class="input"
-            :ref="`introtext${answer._id}`"
-            :id="`introtext${answer._id}`"
-          />
+          <label :for="`name${answer._id}`">Текст ответа</label>
+          <input type="text" v-model="answer.name" class="input" :ref="`name${answer._id}`" :id="`name${answer._id}`" />
           <span class="error-message">{{ errors[0] }}</span>
         </ValidationProvider>
 
@@ -129,7 +123,7 @@ export default {
     level: "",
     date_created: "",
     showAnswerAdd: false,
-    answers: [{ introtext: "", recomendation: "" }]
+    answers: [{ name: "", recomendation: "" }]
   }),
   async asyncData({ app, params }) {
     try {
@@ -190,7 +184,7 @@ export default {
     answerUpdate(answer) {
       let formData = {
         answerId: answer._id,
-        answerIntrotext: this.$refs["introtext" + answer._id][0].value,
+        answerName: this.$refs["name" + answer._id][0].value,
         answerRecomendation: this.$refs["recomendation" + answer._id][0].value
       };
       axios

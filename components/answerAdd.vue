@@ -1,8 +1,8 @@
 <template>
   <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
-    <ValidationProvider rules="required|min:5" v-slot="{ errors }" class="group w100" tag="div">
-      <label for="answer-introtext-new">Текст ответа</label>
-      <input id="answer-introtext-new" type="text" v-model="answer.introtext" class="input" />
+    <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
+      <label for="answer-name-new">Текст ответа</label>
+      <input id="answer-name-new" type="text" v-model="answer.name" class="input" />
       <span class="error-message">{{ errors[0] }}</span>
     </ValidationProvider>
 
@@ -41,7 +41,7 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
   data: () => ({
-    answer: { introtext: "", recomendation: "" }
+    answer: { name: "", recomendation: "" }
   }),
   components: {
     Editor,
@@ -52,7 +52,7 @@ export default {
   methods: {
     answerCreate() {
       let formData = {
-        introtext: this.answer.introtext,
+        name: this.answer.name,
         recomendation: this.answer.recomendation
       };
       axios

@@ -89,7 +89,7 @@ router.post("/:id/answer", async (req, res) => {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
         const newAnswer = {
-          introtext: req.body.introtext,
+          name: req.body.name,
           recomendation: req.body.recomendation
         };
         res.question = await Question.findOneAndUpdate(
@@ -121,7 +121,7 @@ router.patch("/:id/answer", async (req, res) => {
           { _id: req.params.id, "answers._id": req.body.answerId },
           {
             $set: {
-              "answers.$.introtext": req.body.answerIntrotext,
+              "answers.$.name": req.body.answerName,
               "answers.$.recomendation": req.body.answerRecomendation
             }
           },

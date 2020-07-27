@@ -53,10 +53,39 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", getResult, async (req, res) => {
+  if (req.headers.authorization === undefined) {
+    res.status(403).json({ message: "Токен не распознан" });
+  } else {
+    const token = req.headers.authorization.split("Bearer ")[1];
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) {
+        res.status(403).json({ message: "Токен неправильный" });
+      } else {
+        try {
+          await res.result.remove();
+          res.status(200).json({ message: "Удалено" });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      }
+    });
+  }
+});
+
 async function getResult(req, res, next) {
   let result;
   try {
-    result = await Result.findOne({ _id: req.params.id });
+    result = await Result.findOne({ _id: req.params.id })
+      .populate({
+        path: "audit",
+        select: "questions name introtext conclusion",
+        populate: {
+          path: "questions",
+          select: "name introtext level answers"
+        }
+      })
+      .exec();
     if (result == null) {
       return res.status(404).json({ message: "Нет такой страницы" });
     }

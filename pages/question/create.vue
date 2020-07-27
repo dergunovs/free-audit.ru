@@ -2,7 +2,7 @@
   <div>
     <h1>Создать вопрос</h1>
     <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
-      <ValidationProvider rules="required|min:3|max:20" v-slot="{ errors }" class="group w50" tag="div">
+      <ValidationProvider rules="required" v-slot="{ errors }" class="group w50" tag="div">
         <label for="name">Название вопроса</label>
         <input id="name" type="text" v-model="name" class="input" />
         <span class="error-message">{{ errors[0] }}</span>

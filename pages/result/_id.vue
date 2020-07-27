@@ -1,8 +1,43 @@
 <template>
   <div>
-    <h1>{{ result.url }}</h1>
-    <div class="text-center">Дата создания {{ $dateFns.format(new Date(result.date_created), "dd.MM.yyyy г.") }}</div>
-    {{ result.audit }}
+    <h1>{{ result.audit.name }} сайта {{ result.url }}</h1>
+    <div class="text-center">
+      Дата создания {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
+    </div>
+
+    <div class="form">
+      <div class="group w100">
+        <div v-html="result.audit.introtext"></div>
+      </div>
+
+      <div class="group w100">
+        <div v-for="question in result.audit.questions" :key="question.index">
+          <h2>{{ question.name }}</h2>
+          <div class="question-level">{{ question.level }}</div>
+          <div v-html="question.introtext"></div>
+
+          <div v-for="answer in question.answers" :key="answer.index">
+            {{ answer.name }}
+            <div v-html="answer.recomendation"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="group w100">
+        <div v-html="result.audit.conclusion"></div>
+      </div>
+
+      <div class="group w100">
+        <div class="buttons-block">
+          <button class="input button" v-on:click="resultUpdate">
+            Обновить
+          </button>
+          <button class="input button delete" v-on:click="resultDelete">
+            Удалить
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -32,27 +67,20 @@ export default {
     ValidationObserver
   },
   methods: {
-    resultUpdate() {
-      let formData = {
-        url: this.url
-      };
-      axios
-        .patch(`${process.env.baseUrl}/api/result/${this.result._id}`)
-        .then(response => {
-          this.result.url = response.data.url;
-          this.$toast.success("Готово", { duration: 1000 });
-        })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    },
+    resultUpdate() {},
     resultDelete() {
       axios
-        .delete(`${process.env.baseUrl}/api/result/${this.result._id}`)
-        .then(
+        .delete(`${process.env.baseUrl}/api/result/${this.result._id}`, {
+          headers: {
+            Authorization: this.$auth.$storage._state["_token.local"]
+          }
+        })
+        .then(response => {
           setTimeout(() => {
             this.$router.push(`/result/`);
           }, 500),
-          this.$toast.success("Готово", { duration: 1000 })
-        )
+            this.$toast.success("Готово", { duration: 1000 });
+        })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
   },
