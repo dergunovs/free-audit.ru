@@ -16,9 +16,12 @@
           <div class="question-level">{{ question.level }}</div>
           <div v-html="question.introtext"></div>
 
-          <div v-for="answer in question.answers" :key="answer.index">
-            {{ answer.name }}
-            <div v-html="answer.recomendation"></div>
+          <div class="form">
+            <div v-for="answer in question.answers" :key="answer.index" class="group w25">
+              <input type="radio" :id="answer._id" :value="answer._id" v-model="question._id" />
+              <label :for="answer._id">{{ answer.name }}</label>
+              <div v-html="answer.recomendation"></div>
+            </div>
           </div>
         </div>
       </div>
