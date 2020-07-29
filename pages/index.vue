@@ -52,7 +52,7 @@ export default {
   methods: {
     resultCreate() {
       let formData = {
-        audit: this.audit,
+        audit: { _id: this.audit },
         url: this.url
       };
       axios

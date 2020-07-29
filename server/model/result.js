@@ -2,9 +2,14 @@ const mongoose = require("mongoose");
 
 const resultSchema = new mongoose.Schema({
   audit: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Audit",
-    required: true
+    _id: { type: mongoose.Schema.Types.ObjectId, ref: "Audit", required: true },
+    questions: [
+      {
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
+        answer_picked: { type: mongoose.Schema.Types.ObjectId },
+        comment: { type: String, default: "" }
+      }
+    ]
   },
   url: {
     type: String,
@@ -18,7 +23,7 @@ const resultSchema = new mongoose.Schema({
   },
   date_created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 

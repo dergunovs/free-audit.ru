@@ -7,7 +7,7 @@
           {{ result.url }}
         </nuxt-link>
         <br />
-        {{ result.audit.name }}, {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
+        {{ result.audit._id.name }}, {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
       </div>
     </div>
   </div>

@@ -18,9 +18,15 @@ const questionSchema = new mongoose.Schema({
       recomendation: { type: String, required: true }
     }
   ],
+  answer_picked: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  comment: {
+    type: String
+  },
   date_created: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 
