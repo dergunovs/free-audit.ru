@@ -58,7 +58,10 @@ export default {
       axios
         .post(`${process.env.baseUrl}/api/result`, formData)
         .then(response => {
-          this.$toast.success("Готово", { duration: 1000 });
+          setTimeout(() => {
+            this.$router.push(`/result/${response.data.urlToRedirect}`);
+          }, 500),
+            this.$toast.success("Шаблон для аудита создан", { duration: 1000 });
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
