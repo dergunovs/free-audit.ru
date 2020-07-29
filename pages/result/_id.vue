@@ -8,9 +8,11 @@
     <div v-html="result.audit._id.introtext" class="introtext-conclusion"></div>
 
     <div v-for="question in result.audit._id.questions" :key="question.index" class="form form-result">
-      <h2>{{ question.name }}</h2>
-      <div class="question-level">{{ question.level }}</div>
-      <div v-html="question.introtext"></div>
+      <div class="group w100">
+        <h2>{{ question.name }}</h2>
+        <div class="question-level">{{ question.level }}</div>
+        <div v-html="question.introtext"></div>
+      </div>
 
       <div v-for="answer in question.answers" :key="answer.index" class="group w25">
         <input type="radio" :id="answer._id" :value="answer._id" v-model="question.answer_picked" />

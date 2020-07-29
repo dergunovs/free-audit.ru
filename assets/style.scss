@@ -126,30 +126,23 @@ header {
     justify-content: center;
   }
   &.form-result {
-    margin: 40px 0;
+    margin-bottom: 64px;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 32px;
     box-shadow: 0px 0px 12px -4px #bbb;
-    border-radius: 40px;
+    border-radius: 32px;
   }
   .w100 {
-    width: calc(100% - 16px);
+    width: 100%;
   }
   .w50 {
-    width: calc(50% - 16px);
+    width: 50%;
   }
   .w25 {
-    width: calc(25% - 16px);
+    width: 25%;
   }
   .w12 {
-    width: calc(12.5% - 16px);
-  }
-  .introtext-conclusion {
-    background-color: #eee;
-    padding: 16px 32px;
-    box-sizing: border-box;
-    margin: 32px auto 12px;
-    border-left: 8px solid #ff5050;
+    width: 12.5%;
   }
   h2 {
     margin: 0;
@@ -162,7 +155,7 @@ header {
     margin-bottom: 12px;
   }
   .group {
-    margin: 8px;
+    padding: 8px;
     box-sizing: border-box;
     input[type="radio"] {
       display: none;
@@ -196,7 +189,8 @@ header {
     }
     label {
       display: inline-block;
-      margin-bottom: 2px;
+      margin-bottom: 4px;
+      font-weight: 700;
     }
     .input {
       width: 100%;
@@ -269,4 +263,12 @@ header {
 .answers-block {
   display: flex;
   flex-wrap: wrap;
+}
+
+.introtext-conclusion {
+  background-color: #f6f6f6;
+  padding: 16px 32px;
+  box-sizing: border-box;
+  margin: 32px auto;
+  border-left: 8px solid #ff5050;
 }
