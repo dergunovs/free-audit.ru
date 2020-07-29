@@ -32,7 +32,7 @@ module.exports = {
 
   dateFns: { defaultLocale: "ru" },
 
-  modules: ["@nuxtjs/axios", "@nuxt/http", "@nuxtjs/auth", "@nuxtjs/toast"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/toast"],
 
   axios: { proxy: true },
 

@@ -140,6 +140,31 @@ header {
   .group {
     padding: 8px;
     box-sizing: border-box;
+    input[type="radio"] {
+      display: none;
+      + label {
+        background-color: #eee;
+        padding: 12px;
+        cursor: pointer;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+        border-radius: 16px;
+        + .answer-text {
+          display: none;
+        }
+      }
+
+      &:checked {
+        + label {
+          background-color: #ff5050;
+          color: #fff;
+          + .answer-text {
+            display: block;
+          }
+        }
+      }
+    }
     .error-message {
       display: block;
       height: 0;
