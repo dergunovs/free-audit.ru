@@ -179,6 +179,12 @@ header {
           + .answer-text {
             display: block;
             width: calc(400% + 48px);
+            &::before {
+              content: "Рекомендации";
+              font-weight: 700;
+              margin-top: 20px;
+              display: block;
+            }
             &.answer1 {
               margin-left: calc(-100% - 16px);
             }
