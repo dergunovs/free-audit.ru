@@ -14,10 +14,10 @@
         <div v-html="question.introtext"></div>
       </div>
 
-      <div v-for="answer in question.answers" :key="answer.index" class="group w25">
+      <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
         <input type="radio" :id="answer._id" :value="answer._id" v-model="question.answer_picked" />
         <label :for="answer._id">{{ answer.name }}</label>
-        <div class="answer-text" v-html="answer.recomendation"></div>
+        <div :class="`answer-text answer${index}`" v-html="answer.recomendation"></div>
       </div>
 
       <div class="group w100">

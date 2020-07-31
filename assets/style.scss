@@ -178,6 +178,16 @@ header {
           color: #fff;
           + .answer-text {
             display: block;
+            width: calc(400% + 48px);
+            &.answer1 {
+              margin-left: calc(-100% - 16px);
+            }
+            &.answer2 {
+              margin-left: calc(-200% - 32px);
+            }
+            &.answer3 {
+              margin-left: calc(-300% - 48px);
+            }
           }
         }
       }
