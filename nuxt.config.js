@@ -7,7 +7,8 @@ module.exports = {
   },
 
   env: {
-    baseUrl: "http://localhost:3000"
+    baseUrl: "http://localhost:3000",
+    tinyKey: "px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
   },
 
   head: {

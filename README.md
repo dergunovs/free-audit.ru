@@ -28,12 +28,12 @@ npm run build
 npm start
 ```
 
-### Начало работы с приложением
+### Backend глобальные переменные
 
-- В корневой папке проекта нужно создать файл .env.
-- Вписать secret для генерации JWT: SECRET=xxx.
-- Логин администратора: LOGIN=xxx.
-- Пароль администратора: PASSWORD=xxx.
+- В корневой папке проекта нужно создать файл .env
+- Вписать secret для генерации JWT: SECRET=xxx
+- Логин администратора: LOGIN=xxx
+- Пароль администратора: PASSWORD=xxx
 
 Например:
 
@@ -41,4 +41,20 @@ npm start
 SECRET=g0hv3003ubhgv3g3tg
 LOGIN=admin
 PASSWORD=gnm90ubne
+```
+
+### Frontend глобальные переменные
+
+В корневой папке проекта в файле nuxt.config.js в разделе env изменить глобальные переменные:
+
+- Домен сайта: baseUrl
+- Api ключ tinyMCE (бесплатно получите на сайте tiny.cloud): tinyKey
+
+Например:
+
+```bash
+  env: {
+    baseUrl: "http://localhost:3000",
+    tinyKey: "er0yhb47t9ny-r9g8hbur0"
+  }
 ```

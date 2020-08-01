@@ -4,13 +4,13 @@
     <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w50" tag="div">
         <label for="name">Название вопроса</label>
-        <input id="name" type="text" v-model="name" class="input" />
+        <input v-model="name" type="text" id="name" class="input" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w50" tag="div">
         <label for="level">Уровень сложности</label>
-        <select class="input" v-model="level">
+        <select v-model="level" id="level" class="input">
           <option value="Лёгкий">Лёгкий</option>
           <option value="Средний">Средний</option>
           <option value="Сложный">Сложный</option>
@@ -21,14 +21,16 @@
       <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
         <label for="introtext">Вступление</label>
         <Editor
-          api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
           v-model="introtext"
+          id="introtext"
+          :api-key="tinyKey"
           :init="{
             height: 270,
-            menubar: true,
+            menubar: false,
             language: 'ru',
-            plugins: ['autolink lists link visualblocks code table paste'],
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist'
+            plugins: ['autolink lists link table'],
+            toolbar:
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -55,7 +57,8 @@ export default {
   data: () => ({
     name: "",
     introtext: "",
-    level: ""
+    level: "",
+    tinyKey: process.env.tinyKey
   }),
   components: {
     Editor,

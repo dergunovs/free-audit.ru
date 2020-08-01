@@ -15,23 +15,24 @@
       </div>
 
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
-        <input type="radio" :id="answer._id" :value="answer._id" v-model="question.answer_picked" />
+        <input v-model="question.answer_picked" type="radio" :id="answer._id" :value="answer._id" />
         <label :for="answer._id">{{ answer.name }}</label>
-        <div :class="`answer-text answer${index}`" v-html="answer.recomendation"></div>
+        <div v-html="answer.recomendation" :id="answer._id" :class="`answer-text answer${index}`"></div>
       </div>
 
       <div class="group w100">
         <label :for="`comment${question._id}`">Комментарий</label>
         <Editor
-          api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
           v-model="question.comment"
           :id="`comment${question._id}`"
+          :api-key="tinyKey"
           :init="{
             height: 270,
-            menubar: true,
+            menubar: false,
             language: 'ru',
-            plugins: ['autolink lists link visualblocks code table paste'],
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist'
+            plugins: ['autolink lists link table'],
+            toolbar:
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
           }"
         />
       </div>
@@ -62,7 +63,8 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
   data: () => ({
-    result: { audit: { questions: [{ _id: "", answer_picked: "", comment: "" }] } }
+    result: { audit: { questions: [{ _id: "", answer_picked: "", comment: "" }] } },
+    tinyKey: process.env.tinyKey
   }),
   async asyncData({ params }) {
     try {
