@@ -5,6 +5,30 @@
       Дата создания {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
     </div>
 
+    <div class="form" v-if="!result.passwordCreated">
+      <div class="group w50">
+        <label for="email">
+          Электронная почта
+        </label>
+        <input v-model="email" type="text" id="email" class="input" />
+      </div>
+      <div class="group w50">
+        <label for="password">
+          Пароль
+        </label>
+        <input v-model="password" type="password" id="password" class="input" />
+      </div>
+      <div class="group w25">
+        <div class="buttons-block">
+          <button class="input button" v-on:click="resultCreatePassword">
+            Сохранить
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div v-else>Форма для ввода пароля и конпка сохранить</div>
+
     <div v-html="result.audit._id.introtext" class="introtext-conclusion"></div>
 
     <div v-for="question in result.audit._id.questions" :key="question.index" class="form form-result">
@@ -64,7 +88,9 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 export default {
   data: () => ({
     result: { audit: { questions: [{ _id: "", answer_picked: "", comment: "" }] } },
-    tinyKey: process.env.tinyKey
+    tinyKey: process.env.tinyKey,
+    email: "",
+    password: ""
   }),
   async asyncData({ params }) {
     try {
@@ -108,6 +134,20 @@ export default {
             this.$router.push(`/result/`);
           }, 500),
             this.$toast.success("Готово", { duration: 1000 });
+        })
+        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
+    resultCreatePassword() {
+      let formData = {
+        email: this.email,
+        password: this.password,
+        passwordCreated: true
+      };
+      axios
+        .patch(`${process.env.baseUrl}/api/result/${this.result._id}/password`, formData)
+        .then(response => {
+          this.result.passwordCreated = response.data.passwordCreated;
+          this.$toast.success("Готово", { duration: 1000 });
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }

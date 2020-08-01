@@ -36,7 +36,8 @@ router.get("/:id", getResult, (req, res) => {
     _id: res.result._id,
     audit: res.result.audit,
     url: res.result.url,
-    date_created: res.result.date_created
+    date_created: res.result.date_created,
+    passwordCreated: res.result.passwordCreated
   });
 });
 
@@ -60,6 +61,22 @@ router.patch("/:id", getResult, async (req, res) => {
         }
       }
     });
+  }
+});
+
+router.patch("/:id/password", getResult, async (req, res) => {
+  if (res.result.passwordCreated === false) {
+    res.result.email = req.body.email;
+    res.result.password = req.body.password;
+    res.result.passwordCreated = req.body.passwordCreated;
+  } else {
+    res.status(401).json({ message: "Пароль уже установлен" });
+  }
+  try {
+    await res.result.save();
+    res.status(200).json({ passwordCreated: res.result.passwordCreated });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -115,6 +132,7 @@ async function getResult(req, res, next) {
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
+
   let questionsDefault = result.audit._id.questions;
   let questionsAnswered = result.audit.questions;
 

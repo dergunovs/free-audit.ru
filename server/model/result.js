@@ -7,7 +7,7 @@ const resultSchema = new mongoose.Schema({
       {
         _id: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
         answer_picked: { type: mongoose.Schema.Types.ObjectId },
-        comment: { type: String, default: "" }
+        comment: { type: String }
       }
     ]
   },
@@ -20,6 +20,10 @@ const resultSchema = new mongoose.Schema({
   },
   password: {
     type: String
+  },
+  passwordCreated: {
+    type: Boolean,
+    default: false
   },
   date_created: {
     type: Date,
