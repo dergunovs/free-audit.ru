@@ -41,7 +41,7 @@
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
         <input v-model="question.answer_picked" type="radio" :id="answer._id" :value="answer._id" />
         <label :for="answer._id">{{ answer.name }}</label>
-        <div v-html="answer.recomendation" :id="answer._id" :class="`answer-text answer${index}`"></div>
+        <div v-html="answer.recomendation" :class="`answer-text answer${index}`"></div>
       </div>
 
       <div class="group w100">

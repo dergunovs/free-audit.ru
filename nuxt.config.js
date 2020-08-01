@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 module.exports = {
   mode: "universal",
 
@@ -7,8 +9,8 @@ module.exports = {
   },
 
   env: {
-    baseUrl: "http://localhost:3000",
-    tinyKey: "px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
+    baseUrl: process.env.BASE_URL,
+    tinyKey: process.env.TINY_KEY
   },
 
   head: {
@@ -38,7 +40,7 @@ module.exports = {
   axios: { proxy: true },
 
   proxy: {
-    "/api/": "http://localhost:3000"
+    "/api/": process.env.BASE_URL
   },
 
   auth: {

@@ -15,6 +15,26 @@ Nuxt.js, Vue.js, Express.js, Mongoose.js, MongoDB. Рекомендуемый р
 npm install
 ```
 
+### Настройка глобальных переменных
+
+В корневой папке проекта создайте файл ".env". В нём укажите:
+
+- BASE_URL: домен вашего сайта
+- TINY_KEY: API ключ tinyMCE - бесплатно получите на сайте tiny.cloud
+- SECRET: ключ для генерации JsonWebToken
+- LOGIN: логин администратора
+- PASSWORD: пароль администратора
+
+Например:
+
+```bash
+BASE_URL=http://localhost:3000
+TINY_KEY=er0yhb47t9nyr9g8hbur0rty
+SECRET=g0hv3003ubhgv3g3tg
+LOGIN=admin
+PASSWORD=gnm90ubne
+```
+
 ### Запуск в режиме разработки
 
 ```bash
@@ -26,35 +46,4 @@ npm run dev
 ```bash
 npm run build
 npm start
-```
-
-### Backend глобальные переменные
-
-- В корневой папке проекта нужно создать файл .env
-- Вписать secret для генерации JWT: SECRET=xxx
-- Логин администратора: LOGIN=xxx
-- Пароль администратора: PASSWORD=xxx
-
-Например:
-
-```bash
-SECRET=g0hv3003ubhgv3g3tg
-LOGIN=admin
-PASSWORD=gnm90ubne
-```
-
-### Frontend глобальные переменные
-
-В корневой папке проекта в файле nuxt.config.js в разделе env изменить глобальные переменные:
-
-- Домен сайта: baseUrl
-- Api ключ tinyMCE (бесплатно получите на сайте tiny.cloud): tinyKey
-
-Например:
-
-```bash
-  env: {
-    baseUrl: "http://localhost:3000",
-    tinyKey: "er0yhb47t9ny-r9g8hbur0"
-  }
 ```
