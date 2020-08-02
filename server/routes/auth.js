@@ -16,23 +16,23 @@ app.use(
   })
 );
 
-router.post("/login", async (req, res) => {
+router.post("/login", (req, res) => {
   if (req.body.user === process.env.USER && req.body.password === process.env.PASSWORD) {
-    await jwt.sign({ user: req.body.user }, process.env.SECRET, { expiresIn: "1d" }, async function(err, token) {
-      await res.json({ token: token, user: req.body.user });
+    jwt.sign({ user: req.body.user }, process.env.SECRET, { expiresIn: "1d" }, async function(err, token) {
+      res.json({ token: token, user: req.body.user });
     });
   } else {
-    await res.status(403).json({ message: "Ошибка авторизации" });
+    res.status(403).json({ message: "Ошибка авторизации" });
   }
 });
 
-router.get("/user", async (req, res) => {
-  const tokenDecoded = await jwt.decode(req.headers.authorization.split("Bearer ")[1]);
+router.get("/user", (req, res) => {
+  const tokenDecoded = jwt.decode(req.headers.authorization.split("Bearer ")[1]);
   res.json({ user: tokenDecoded.user });
 });
 
-router.post("/logout", async (req, res) => {
-  await res.json("Вы успешно вышли из админки");
+router.post("/logout", (req, res) => {
+  res.json("Вы успешно вышли из админки");
 });
 
 module.exports = router;

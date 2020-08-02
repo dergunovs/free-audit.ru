@@ -7,8 +7,8 @@
 
     <div v-if="!result.passwordCreated" class="form form-result-save form-center">
       <div class="group w100 text-center">
-        Создать доступ для редактирования результатов аудита. Ссылка на данный аудит и пароль будут высланы на указанную
-        электронную почту.
+        Создайте доступ для редактирования результатов аудита. Ссылка на данный аудит и пароль будут высланы на
+        указанную электронную почту.
       </div>
       <div class="group w25">
         <label for="email">
@@ -152,6 +152,11 @@ export default {
           this.$toast.success("Готово", { duration: 1000 });
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+      let formDataEmail = {
+        email: this.email,
+        password: this.password
+      };
+      axios.post(`${process.env.baseUrl}/api/email`, formDataEmail);
     }
   }
 };
