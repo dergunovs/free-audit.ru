@@ -36,11 +36,9 @@ const sendMail = (email, password, url) => {
     subject: "Доступы к аудиту на free-audit.ru",
     html:
       "<h1>Доступы к аудиту на free-audit.ru</h1>" +
-      "<p><b>Электронная почта:</b> " +
-      email +
-      "</p><p><b>Пароль:</b> " +
+      "<p><b>Пароль:</b> " +
       password +
-      "</p><p><b>Страница:</b> <a href='" +
+      "</p><p><b>Ссылка на аудит:</b> <a href='" +
       url +
       "'>" +
       url +

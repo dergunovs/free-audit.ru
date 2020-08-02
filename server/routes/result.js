@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const Result = require("../model/result");
 
 router.get("/", async (req, res) => {
@@ -42,7 +43,8 @@ router.get("/:id", getResult, (req, res) => {
 });
 
 router.patch("/:id", getResult, async (req, res) => {
-  if (req.body.emailCheck != res.result.email || req.body.passwordCheck != res.result.password) {
+  const valid = await bcrypt.compare(req.body.passwordCheck, res.result.password);
+  if (!valid) {
     res.status(401).json({ message: "Неправильный логин или пароль" });
   } else {
     res.result.audit.questions = req.body.questions;
@@ -64,12 +66,16 @@ router.patch("/:id/password", getResult, async (req, res) => {
   if (!req.body.email && !req.body.password) {
     res.status(401).json({ message: "Заполните почту и пароль" });
   } else {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
     res.result.email = req.body.email;
-    res.result.password = req.body.password;
+    res.result.password = hashedPassword;
     res.result.passwordCreated = req.body.passwordCreated;
     try {
       await res.result.save();
-      res.status(200).json({ passwordCreated: res.result.passwordCreated });
+      res.status(200).json({
+        password: res.result.password,
+        passwordCreated: res.result.passwordCreated
+      });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
