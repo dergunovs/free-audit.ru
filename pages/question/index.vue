@@ -3,7 +3,7 @@
     <h1>Список вопросов</h1>
     <div class="form">
       <div class="group w12 button-bottom">
-        <nuxt-link to="/question/create" class="input">Создать</nuxt-link>
+        <nuxt-link to="/question/create" class="input button">Создать</nuxt-link>
       </div>
     </div>
     <div class="list-block" v-if="questions">

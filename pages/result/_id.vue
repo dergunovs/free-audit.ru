@@ -5,25 +5,27 @@
       Дата создания {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
     </div>
 
-    <div class="form" v-if="!result.passwordCreated">
-      <div class="group w50">
+    <div v-if="!result.passwordCreated" class="form form-result-save form-center">
+      <div class="group w100 text-center">
+        Создать доступ для редактирования результатов аудита. Ссылка на данный аудит и пароль будут высланы на указанную
+        электронную почту.
+      </div>
+      <div class="group w25">
         <label for="email">
           Электронная почта
         </label>
         <input v-model="email" type="text" id="email" class="input" />
       </div>
-      <div class="group w50">
+      <div class="group w25">
         <label for="password">
           Пароль
         </label>
         <input v-model="password" type="password" id="password" class="input" />
       </div>
-      <div class="group w25">
-        <div class="buttons-block">
-          <button class="input button" v-on:click="resultCreatePassword">
-            Сохранить
-          </button>
-        </div>
+      <div class="group w12 button-bottom">
+        <button class="input button" v-on:click="resultCreatePassword">
+          Сохранить
+        </button>
       </div>
     </div>
 
@@ -65,15 +67,15 @@
     <div v-html="result.audit._id.conclusion" class="introtext-conclusion"></div>
 
     <div class="form">
-      <div class="group w100">
-        <div class="buttons-block">
-          <button class="input button" v-on:click="resultUpdate">
-            Обновить
-          </button>
-          <button class="input button delete" v-on:click="resultDelete">
-            Удалить
-          </button>
-        </div>
+      <div class="group w12 button-bottom">
+        <button class="input button" v-on:click="resultUpdate">
+          Обновить
+        </button>
+      </div>
+      <div class="group w12 button-bottom">
+        <button class="input button delete" v-on:click="resultDelete">
+          Удалить
+        </button>
       </div>
     </div>
   </div>

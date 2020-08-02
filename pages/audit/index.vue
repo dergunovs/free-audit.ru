@@ -3,7 +3,7 @@
     <h1>Список аудитов</h1>
     <div class="form">
       <div class="group w12 button-bottom">
-        <nuxt-link to="/audit/create" class="input">Создать</nuxt-link>
+        <nuxt-link to="/audit/create" class="input button">Создать</nuxt-link>
       </div>
     </div>
     <div class="list-block" v-if="audits">

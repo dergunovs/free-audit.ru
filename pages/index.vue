@@ -21,7 +21,7 @@
         <input type="text" v-model="url" placeholder="Введите адрес сайта без www, http или https" class="input" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
-      <div class="group w12">
+      <div class="group w12 button-bottom">
         <button v-on:click="resultCreate" :disabled="invalid" class="input button">Начать аудит</button>
       </div>
     </ValidationObserver>

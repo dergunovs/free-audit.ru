@@ -36,12 +36,10 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
-      <div class="group w100">
-        <div class="buttons-block">
-          <button class="input button" :disabled="invalid" v-on:click="questionCreate">
-            Опубликовать
-          </button>
-        </div>
+      <div class="group w12 button-bottom">
+        <button class="input button" :disabled="invalid" v-on:click="questionCreate">
+          Опубликовать
+        </button>
       </div>
     </ValidationObserver>
   </div>

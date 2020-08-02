@@ -9,26 +9,25 @@
     <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
       <label for="answer-recomendation-new">Рекомендация</label>
       <Editor
-        api-key="px4oj8yav594v5i49di48fr54hs0tw06l30diztm3hhy3i3z"
         v-model="answer.recomendation"
         id="answer-recomendation-new"
+        :api-key="tinyKey"
         :init="{
           height: 270,
-          menubar: true,
+          menubar: false,
           language: 'ru',
-          plugins: ['autolink lists link visualblocks code table paste'],
-          toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist'
+          plugins: ['autolink lists link table'],
+          toolbar:
+            'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
         }"
       />
       <span class="error-message">{{ errors[0] }}</span>
     </ValidationProvider>
 
-    <div class="group w100">
-      <div class="buttons-block">
-        <button class="input button" :disabled="invalid" v-on:click="answerCreate">
-          Добавить ответ
-        </button>
-      </div>
+    <div class="group w12 button-bottom">
+      <button class="input button" :disabled="invalid" v-on:click="answerCreate">
+        Добавить ответ
+      </button>
     </div>
   </ValidationObserver>
 </template>

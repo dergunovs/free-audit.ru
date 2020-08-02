@@ -43,15 +43,15 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
-      <div class="group w100">
-        <div class="buttons-block">
-          <button class="input button" :disabled="invalid" v-on:click="questionUpdate">
-            Обновить
-          </button>
-          <button class="input button delete" v-on:click="questionDelete">
-            Удалить
-          </button>
-        </div>
+      <div class="group w12 button-bottom">
+        <button class="input button" :disabled="invalid" v-on:click="questionUpdate">
+          Обновить
+        </button>
+      </div>
+      <div class="group w12 button-bottom">
+        <button class="input button delete" v-on:click="questionDelete">
+          Удалить
+        </button>
       </div>
     </ValidationObserver>
 
@@ -92,20 +92,20 @@
           <span class="error-message">{{ errors[0] }}</span>
         </ValidationProvider>
 
-        <div class="group w100">
-          <div class="buttons-block">
-            <button
-              class="input button"
-              :disabled="invalid"
-              v-on:click="answerUpdate(answer)"
-              :ref="`update${answer._id}`"
-            >
-              Обновить
-            </button>
-            <button class="input button delete" v-on:click="answerDelete(answer)">
-              Удалить
-            </button>
-          </div>
+        <div class="group w25 button-bottom">
+          <button
+            class="input button"
+            :disabled="invalid"
+            v-on:click="answerUpdate(answer)"
+            :ref="`update${answer._id}`"
+          >
+            Обновить
+          </button>
+        </div>
+        <div class="group w25 button-bottom">
+          <button class="input button delete" v-on:click="answerDelete(answer)">
+            Удалить
+          </button>
         </div>
       </ValidationObserver>
     </div>

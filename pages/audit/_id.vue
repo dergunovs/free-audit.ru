@@ -45,40 +45,36 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
-      <h2 class="group w100">Вопросы</h2>
-
       <div class="group w50">
-        <label for="questions">Текущие</label>
-        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false" id="questions">
+        <h2>Текущие вопросы</h2>
+        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false">
           <div v-for="question in questions" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>{{ question.level }}</div>
-            <div v-html="question.introtext"></div>
             <nuxt-link :to="`/question/${question._id}`">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>
       <div class="group w50">
-        <label for="questionsList">Список</label>
-        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false" id="qustionsList">
+        <h2>Общий список вопросов</h2>
+        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false">
           <div v-for="question in questionsList" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
             <div>{{ question.level }}</div>
-            <div v-html="question.introtext"></div>
             <nuxt-link :to="`/question/${question._id}`">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>
 
-      <div class="group w100">
-        <div class="buttons-block">
-          <button class="input button" :disabled="invalid" v-on:click="auditUpdate">
-            Обновить
-          </button>
-          <button class="input button delete" v-on:click="auditDelete">
-            Удалить
-          </button>
-        </div>
+      <div class="group w12 button-bottom">
+        <button class="input button" :disabled="invalid" v-on:click="auditUpdate">
+          Обновить
+        </button>
+      </div>
+      <div class="group w12 button-bottom">
+        <button class="input button delete" v-on:click="auditDelete">
+          Удалить
+        </button>
       </div>
     </ValidationObserver>
   </div>
