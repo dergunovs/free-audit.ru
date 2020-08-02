@@ -34,7 +34,17 @@ const sendMail = (email, password, url) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Доступы к аудиту на free-audit.ru",
-    text: "Пароль: " + password + ". Страница: " + url
+    html:
+      "<h1>Доступы к аудиту на free-audit.ru</h1>" +
+      "<p><b>Электронная почта:</b> " +
+      email +
+      "</p><p><b>Пароль:</b> " +
+      password +
+      "</p><p><b>Страница:</b> <a href='" +
+      url +
+      "'>" +
+      url +
+      "</a></p>"
   });
 };
 

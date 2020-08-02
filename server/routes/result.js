@@ -42,41 +42,37 @@ router.get("/:id", getResult, (req, res) => {
 });
 
 router.patch("/:id", getResult, async (req, res) => {
-  if (req.headers.authorization === undefined) {
-    res.status(403).json({ message: "Токен не распознан" });
+  if (req.body.emailCheck != res.result.email || req.body.passwordCheck != res.result.password) {
+    res.status(401).json({ message: "Неправильный логин или пароль" });
   } else {
-    const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
-      if (err) {
-        res.status(403).json({ message: "Токен неправильный" });
-      } else {
-        res.result.audit.questions = req.body.questions;
-        try {
-          await res.result.save();
-          res.status(200).json({
-            questions: res.result.audit.questions
-          });
-        } catch (err) {
-          res.status(500).json({ message: err.message });
-        }
-      }
-    });
+    res.result.audit.questions = req.body.questions;
+    try {
+      await res.result.save();
+      res.status(200).json({
+        questions: res.result.audit.questions
+      });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
 });
 
 router.patch("/:id/password", getResult, async (req, res) => {
-  if (res.result.passwordCreated === false) {
+  if (res.result.passwordCreated != false) {
+    res.status(401).json({ message: "Пароль уже установлен" });
+  }
+  if (!req.body.email && !req.body.password) {
+    res.status(401).json({ message: "Заполните почту и пароль" });
+  } else {
     res.result.email = req.body.email;
     res.result.password = req.body.password;
     res.result.passwordCreated = req.body.passwordCreated;
-  } else {
-    res.status(401).json({ message: "Пароль уже установлен" });
-  }
-  try {
-    await res.result.save();
-    res.status(200).json({ passwordCreated: res.result.passwordCreated });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+    try {
+      await res.result.save();
+      res.status(200).json({ passwordCreated: res.result.passwordCreated });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
 });
 

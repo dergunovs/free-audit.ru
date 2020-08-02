@@ -5,31 +5,36 @@
       Дата создания {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
     </div>
 
-    <div v-if="!result.passwordCreated" class="form form-result-save form-center">
+    <ValidationObserver
+      v-if="!result.passwordCreated"
+      class="form form-result-password-save form-center"
+      v-slot="{ invalid }"
+      tag="div"
+    >
       <div class="group w100 text-center">
         Создайте доступ для редактирования результатов аудита. Ссылка на данный аудит и пароль будут высланы на
         указанную электронную почту.
       </div>
-      <div class="group w25">
+      <ValidationProvider rules="required|email" v-slot="{ errors }" class="group w25" tag="div">
         <label for="email">
           Электронная почта
         </label>
         <input v-model="email" type="text" id="email" class="input" />
-      </div>
-      <div class="group w25">
+        <span class="error-message">{{ errors[0] }}</span>
+      </ValidationProvider>
+      <ValidationProvider rules="required|min:3" v-slot="{ errors }" class="group w25" tag="div">
         <label for="password">
           Пароль
         </label>
         <input v-model="password" type="password" id="password" class="input" />
-      </div>
+        <span class="error-message">{{ errors[0] }}</span>
+      </ValidationProvider>
       <div class="group w12 button-bottom">
-        <button class="input button" v-on:click="resultCreatePassword">
+        <button v-on:click="resultPasswordCreate" :disabled="invalid" class="input button">
           Сохранить
         </button>
       </div>
-    </div>
-
-    <div v-else>Форма для ввода пароля и конпка сохранить</div>
+    </ValidationObserver>
 
     <div v-html="result.audit._id.introtext" class="introtext-conclusion"></div>
 
@@ -67,14 +72,29 @@
     <div v-html="result.audit._id.conclusion" class="introtext-conclusion"></div>
 
     <div class="form">
-      <div class="group w12 button-bottom">
-        <button class="input button" v-on:click="resultUpdate">
-          Обновить
-        </button>
-      </div>
-      <div class="group w12 button-bottom">
+      <div class="group w25 button-bottom">
         <button class="input button delete" v-on:click="resultDelete">
           Удалить
+        </button>
+      </div>
+    </div>
+
+    <div class="form form-result-update form-half-width">
+      <div v-if="result.passwordCreated" class="group w25">
+        <label for="emailCheck">
+          Электронная почта
+        </label>
+        <input v-model="emailCheck" type="text" id="emailCheck" class="input" />
+      </div>
+      <div v-if="result.passwordCreated" class="group w25">
+        <label for="passwordCheck">
+          Пароль
+        </label>
+        <input v-model="passwordCheck" type="password" id="passwordCheck" class="input" />
+      </div>
+      <div class="group w25 button-bottom">
+        <button class="input button" v-on:click="resultUpdate">
+          Обновить
         </button>
       </div>
     </div>
@@ -92,7 +112,9 @@ export default {
     result: { audit: { questions: [{ _id: "", answer_picked: "", comment: "" }] } },
     tinyKey: process.env.tinyKey,
     email: "",
-    password: ""
+    password: "",
+    emailCheck: "",
+    passwordCheck: ""
   }),
   async asyncData({ params }) {
     try {
@@ -102,6 +124,11 @@ export default {
       console.log(err);
     }
   },
+  head() {
+    return {
+      meta: [{ name: "robots", content: "noindex,nofollow" }]
+    };
+  },
   components: {
     Editor,
     ValidationProvider,
@@ -110,14 +137,12 @@ export default {
   methods: {
     resultUpdate() {
       let formData = {
-        questions: this.result.audit._id.questions
+        questions: this.result.audit._id.questions,
+        emailCheck: this.emailCheck,
+        passwordCheck: this.passwordCheck
       };
       axios
-        .patch(`${process.env.baseUrl}/api/result/${this.result._id}`, formData, {
-          headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
-        })
+        .patch(`${process.env.baseUrl}/api/result/${this.result._id}`, formData)
         .then(response => {
           this.result.audit.questions = response.data.questions;
           this.$toast.success("Готово", { duration: 1000 });
@@ -139,7 +164,7 @@ export default {
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
-    resultCreatePassword() {
+    resultPasswordCreate() {
       let formData = {
         email: this.email,
         password: this.password,
