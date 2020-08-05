@@ -24,9 +24,9 @@ npm install
 - SECRET: ключ для генерации JsonWebToken
 - LOGIN: логин администратора
 - PASSWORD: пароль администратора
-- EMAIL_SMTP= сервер SMTP
-- EMAIL_USER= логин почты для отправки сообщений
-- EMAIL_PASSWORD= пароль почты для отправки сообщений
+- EMAIL_SMTP: сервер SMTP
+- EMAIL_USER: логин почты для отправки сообщений
+- EMAIL_PASSWORD: пароль почты для отправки сообщений
 
 Например:
 
