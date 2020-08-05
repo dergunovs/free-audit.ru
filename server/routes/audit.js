@@ -3,6 +3,23 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Audit = require("../model/audit");
 
+const multer = require("multer");
+const imageMimeTypes = ["image/jpeg", "image/png"];
+var storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "static/uploads/audit");
+  },
+  filename: function(req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    cb(null, imageMimeTypes.includes(file.mimetype));
+  }
+});
+
 router.get("/", async (req, res) => {
   try {
     const audits = await Audit.find()
@@ -106,6 +123,26 @@ router.delete("/:id", getAudit, async (req, res) => {
         try {
           await res.audit.remove();
           res.status(200).json({ message: "Удалено" });
+        } catch (err) {
+          res.status(500).json({ message: err.message });
+        }
+      }
+    });
+  }
+});
+
+router.post("/addFile", upload.single("file"), async (req, res) => {
+  if (req.headers.authorization === undefined) {
+    res.status(403).json({ message: "Токен не распознан" });
+  } else {
+    const token = req.headers.authorization.split("Bearer ")[1];
+    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+      if (err) {
+        res.status(403).json({ message: "Токен неправильный" });
+      } else {
+        const newFileName = req.file != null ? req.file : null;
+        try {
+          await res.json(newFileName);
         } catch (err) {
           res.status(500).json({ message: err.message });
         }

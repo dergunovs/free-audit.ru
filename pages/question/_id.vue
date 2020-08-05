@@ -35,9 +35,12 @@
             height: 270,
             menubar: false,
             language: 'ru',
-            plugins: ['autolink lists link table'],
+            plugins: ['autolink lists link table image'],
             toolbar:
-              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
+            images_upload_handler: function(blobInfo, success) {
+              tinyAddFile(blobInfo, success);
+            }
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -84,9 +87,12 @@
               height: 270,
               menubar: false,
               language: 'ru',
-              plugins: ['autolink lists link table'],
+              plugins: ['autolink lists link table image'],
               toolbar:
-                'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+                'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
+              images_upload_handler: function(blobInfo, success) {
+                tinyAddFile(blobInfo, success);
+              }
             }"
           />
           <span class="error-message">{{ errors[0] }}</span>
@@ -222,6 +228,18 @@ export default {
         this.question.answers = answersUpdated;
       }, 500),
         (this.showAnswerAdd = false);
+    },
+    tinyAddFile(blobInfo, success) {
+      let formData = new FormData();
+      formData.append("file", blobInfo.blob(), blobInfo.filename());
+      axios
+        .post(`${process.env.baseUrl}/api/question/addFile`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: this.$auth.$storage._state["_token.local"]
+          }
+        })
+        .then(response => success(`/uploads/question/${response.data.filename}`));
     }
   },
   mounted() {

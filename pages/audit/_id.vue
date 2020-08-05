@@ -19,9 +19,12 @@
             height: 270,
             menubar: false,
             language: 'ru',
-            plugins: ['autolink lists link table'],
+            plugins: ['autolink lists link table image'],
             toolbar:
-              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
+            images_upload_handler: function(blobInfo, success) {
+              tinyAddFile(blobInfo, success);
+            }
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -37,9 +40,12 @@
             height: 270,
             menubar: false,
             language: 'ru',
-            plugins: ['autolink lists link table'],
+            plugins: ['autolink lists link table image'],
             toolbar:
-              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
+            images_upload_handler: function(blobInfo, success) {
+              tinyAddFile(blobInfo, success);
+            }
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -153,6 +159,18 @@ export default {
           this.$toast.success("Готово", { duration: 1000 })
         )
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
+    tinyAddFile(blobInfo, success) {
+      let formData = new FormData();
+      formData.append("file", blobInfo.blob(), blobInfo.filename());
+      axios
+        .post(`${process.env.baseUrl}/api/audit/addFile`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: this.$auth.$storage._state["_token.local"]
+          }
+        })
+        .then(response => success(`/uploads/audit/${response.data.filename}`));
     }
   },
   mounted() {
