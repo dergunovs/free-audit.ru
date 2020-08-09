@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ siteUrl }}
+    <p>Код ответа сервера: {{ status }}</p>
   </div>
 </template>
 
@@ -8,20 +8,20 @@
 import axios from "axios";
 
 export default {
+  data: () => ({
+    status: ""
+  }),
   props: ["siteUrl"],
-  methods: {
-    getResponseCodes() {
-      axios
-        .get(`${siteUrl}`, {
-          headers: {}
-        })
-        .then(response => {
-          console.log(response);
-          var eventsUpdated = response.data.events;
-          this.$emit("eventCreate", eventsUpdated);
-        })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    }
+  mounted() {
+    let formData = {
+      url: this.siteUrl
+    };
+    axios
+      .post(`${process.env.baseUrl}/api/result/cors/`, formData)
+      .then(response => {
+        this.status = response.data;
+      })
+      .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
   }
 };
 </script>

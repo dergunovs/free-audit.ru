@@ -9,7 +9,7 @@
       </span>
     </div>
     <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
-      <ValidationProvider rules="required|min:3|max:20" v-slot="{ errors }" class="group w50" tag="div">
+      <ValidationProvider rules="required" v-slot="{ errors }" class="group w50" tag="div">
         <label for="name">Название вопроса</label>
         <input v-model="name" type="text" id="name" class="input" />
         <span class="error-message">{{ errors[0] }}</span>
@@ -164,8 +164,7 @@ export default {
     Editor,
     ValidationProvider,
     ValidationObserver,
-    answerAdd: () => import("~/components/answerAdd.vue"),
-    serverResponse: () => import("~/components/question/serverResponse.vue")
+    answerAdd: () => import("~/components/answerAdd.vue")
   },
   methods: {
     questionUpdate() {

@@ -22,7 +22,7 @@
         <label for="features">Функциональность</label>
         <select v-model="feature" id="feature" class="input">
           <option value="">Нет</option>
-          <option value="serverResponse">Ответ сервера</option>
+          <option v-for="component in componentsList" :key="component.index" :value="component">{{ component }}</option>
         </select>
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
@@ -69,6 +69,7 @@ export default {
     introtext: "",
     level: "",
     feature: "",
+    componentsList: [],
     tinyKey: process.env.tinyKey
   }),
   components: {
@@ -110,6 +111,12 @@ export default {
         })
         .then(response => success(`/uploads/question/${response.data.filename}`));
     }
+  },
+  mounted() {
+    const getComponents = require.context("~/components/question", false, /\.vue$/);
+    this.componentsList = getComponents
+      .keys()
+      .map(file => [file.replace(/(^.\/)|(\.vue$)/g, ""), getComponents(file)][0]);
   }
 };
 </script>

@@ -1,4 +1,5 @@
 const express = require("express");
+const fetch = require("node-fetch");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -30,6 +31,13 @@ router.get("/", async (req, res) => {
       }
     });
   }
+});
+
+router.post("/cors/", (req, res, next) => {
+  let url = req.body.url;
+  fetch(`http://${url}`, { redirect: "manual" }).then(response => {
+    res.json(response.status);
+  });
 });
 
 router.get("/:id", getResult, (req, res) => {
@@ -124,7 +132,7 @@ async function getResult(req, res, next) {
         select: "name introtext conclusion questions",
         populate: {
           path: "questions",
-          select: "name introtext level answers"
+          select: "name introtext level answers feature"
         }
       })
       .exec();

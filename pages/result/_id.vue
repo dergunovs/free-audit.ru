@@ -45,6 +45,10 @@
         <div v-html="question.introtext"></div>
       </div>
 
+      <div class="group w100">
+        <component :is="question.feature" :siteUrl="result.url" />
+      </div>
+
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
         <input v-model="question.answer_picked" type="radio" :id="answer._id" :value="answer._id" />
         <label :for="answer._id">{{ answer.name }}</label>
@@ -122,7 +126,8 @@ export default {
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
+    serverResponse: () => import("~/components/question/serverResponse.vue")
   },
   methods: {
     resultUpdate() {
