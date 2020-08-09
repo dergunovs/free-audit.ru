@@ -3,6 +3,7 @@ const fetch = require("node-fetch");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Promise = require("bluebird");
 const Result = require("../model/result");
 
 router.get("/", async (req, res) => {
@@ -31,13 +32,6 @@ router.get("/", async (req, res) => {
       }
     });
   }
-});
-
-router.post("/cors/", (req, res, next) => {
-  let url = req.body.url;
-  fetch(`http://${url}`, { redirect: "manual" }).then(response => {
-    res.json(response.status);
-  });
 });
 
 router.get("/:id", getResult, (req, res) => {
@@ -101,6 +95,47 @@ router.post("/", async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
+});
+
+router.post("/serverResponse/", async (req, res, next) => {
+  let url = req.body.url;
+  let urlList = [
+    `http://${url}`,
+    `http://${url}//`,
+    `http://${url}/index`,
+    `http://${url}/index.html`,
+    `http://${url}/index.php`,
+    `http://${url}/page/1`,
+    `https://${url}`,
+    `https://${url}//`,
+    `https://${url}/index`,
+    `https://${url}/index.html`,
+    `https://${url}/index.php`,
+    `https://${url}/page/1`,
+    `http://www.${url}`,
+    `http://www.${url}//`,
+    `http://www.${url}/index`,
+    `http://www.${url}/index.html`,
+    `http://www.${url}/index.php`,
+    `http://www.${url}/page/1`,
+    `https://www.${url}`,
+    `https://www.${url}//`,
+    `https://www.${url}/index`,
+    `https://www.${url}/index.html`,
+    `https://www.${url}/index.php`,
+    `https://www.${url}/page/1`
+  ];
+
+  let statusList = await Promise.map(urlList, async url => {
+    status = await fetch(url, { redirect: "manual" }).then(response => {
+      return response.status;
+    });
+    return status;
+  });
+
+  const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
+
+  res.json(mergedList);
 });
 
 router.delete("/:id", getResult, async (req, res) => {
