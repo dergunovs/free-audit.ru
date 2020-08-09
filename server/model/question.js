@@ -24,6 +24,9 @@ const questionSchema = new mongoose.Schema({
   comment: {
     type: String
   },
+  feature: {
+    type: String
+  },
   date_created: {
     type: Date,
     default: Date.now

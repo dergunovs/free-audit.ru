@@ -8,12 +8,21 @@
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
-      <ValidationProvider rules="required" v-slot="{ errors }" class="group w50" tag="div">
+      <ValidationProvider rules="required" v-slot="{ errors }" class="group w25" tag="div">
         <label for="level">Уровень сложности</label>
         <select v-model="level" id="level" class="input">
           <option value="Лёгкий">Лёгкий</option>
           <option value="Средний">Средний</option>
           <option value="Сложный">Сложный</option>
+        </select>
+        <span class="error-message">{{ errors[0] }}</span>
+      </ValidationProvider>
+
+      <ValidationProvider rules="" v-slot="{ errors }" class="group w25" tag="div">
+        <label for="features">Функциональность</label>
+        <select v-model="feature" id="feature" class="input">
+          <option value="">Нет</option>
+          <option value="serverResponse">Ответ сервера</option>
         </select>
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
@@ -59,6 +68,7 @@ export default {
     name: "",
     introtext: "",
     level: "",
+    feature: "",
     tinyKey: process.env.tinyKey
   }),
   components: {
@@ -71,7 +81,8 @@ export default {
       let formData = {
         name: this.name,
         introtext: this.introtext,
-        level: this.level
+        level: this.level,
+        feature: this.feature
       };
       axios
         .post(`${process.env.baseUrl}/api/question`, formData, {

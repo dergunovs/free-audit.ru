@@ -39,6 +39,7 @@ router.get("/:id", getQuestion, (req, res) => {
     name: res.question.name,
     introtext: res.question.introtext,
     level: res.question.level,
+    feature: res.question.feature,
     date_created: res.question.date_created,
     answers: res.question.answers
   });
@@ -56,7 +57,8 @@ router.post("/", async (req, res) => {
         const question = new Question({
           name: req.body.name,
           introtext: req.body.introtext,
-          level: req.body.level
+          level: req.body.level,
+          feature: req.body.feature
         });
         try {
           await question.save();
@@ -81,12 +83,14 @@ router.patch("/:id", getQuestion, async (req, res) => {
         res.question.name = req.body.name;
         res.question.introtext = req.body.introtext;
         res.question.level = req.body.level;
+        res.question.feature = req.body.feature;
         try {
           await res.question.save();
           res.status(200).json({
             name: res.question.name,
             introtext: res.question.introtext,
-            level: res.question.level
+            level: res.question.level,
+            feature: res.question.feature
           });
         } catch (err) {
           res.status(500).json({ message: err.message });
