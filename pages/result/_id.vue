@@ -46,7 +46,7 @@
       </div>
 
       <div class="group w100">
-        <component :is="question.feature" :siteUrl="result.url" />
+        <component :is="question.feature" :url="result.url" :mainVersion="question.answer_picked" />
       </div>
 
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
@@ -127,7 +127,8 @@ export default {
     Editor,
     ValidationProvider,
     ValidationObserver,
-    serverResponse: () => import("~/components/question/serverResponse.vue")
+    serverResponse: () => import("~/components/question/serverResponse.vue"),
+    mainVersion: () => import("~/components/question/mainVersion.vue")
   },
   methods: {
     resultUpdate() {

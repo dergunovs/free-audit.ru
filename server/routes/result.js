@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const Promise = require("bluebird");
 const Result = require("../model/result");
+const Question = require("../model/question");
 
 router.get("/", async (req, res) => {
   if (req.headers.authorization === undefined) {
@@ -47,7 +48,7 @@ router.get("/:id", getResult, (req, res) => {
 router.patch("/:id", getResult, async (req, res) => {
   const valid = await bcrypt.compare(req.body.passwordCheck, res.result.password);
   if (!valid) {
-    res.status(401).json({ message: "Неправильный логин или пароль" });
+    res.status(401).json({ message: "Неправильный пароль" });
   } else {
     res.result.audit.questions = req.body.questions;
     try {
@@ -85,57 +86,71 @@ router.patch("/:id/password", getResult, async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const result = new Result({
-    audit: req.body.audit,
-    url: req.body.url
-  });
-  try {
-    await result.save();
-    res.status(201).json({ urlToRedirect: result._id });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  if (!req.body.audit && !req.body.url) {
+    res.status(401).json({ message: "Нет данных для создания аудита" });
+  } else {
+    const result = new Result({
+      audit: req.body.audit,
+      url: req.body.url
+    });
+    try {
+      await result.save();
+      res.status(201).json({ urlToRedirect: result._id });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
   }
 });
 
-router.post("/serverResponse/", async (req, res, next) => {
-  let url = req.body.url;
-  let urlList = [
-    `http://${url}`,
-    `http://${url}//`,
-    `http://${url}/index`,
-    `http://${url}/index.html`,
-    `http://${url}/index.php`,
-    `http://${url}/page/1`,
-    `https://${url}`,
-    `https://${url}//`,
-    `https://${url}/index`,
-    `https://${url}/index.html`,
-    `https://${url}/index.php`,
-    `https://${url}/page/1`,
-    `http://www.${url}`,
-    `http://www.${url}//`,
-    `http://www.${url}/index`,
-    `http://www.${url}/index.html`,
-    `http://www.${url}/index.php`,
-    `http://www.${url}/page/1`,
-    `https://www.${url}`,
-    `https://www.${url}//`,
-    `https://www.${url}/index`,
-    `https://www.${url}/index.html`,
-    `https://www.${url}/index.php`,
-    `https://www.${url}/page/1`
-  ];
+router.post("/mainVersion/", async (req, res) => {
+  if (!req.body.url) {
+    res.status(401).json({ message: "Введите адрес сайта" });
+  } else {
+    let url = req.body.url;
+    let urlList = [`http://${url}`, `https://${url}`, `http://www.${url}`, `https://www.${url}`];
+    try {
+      let statusList = await Promise.map(urlList, async url => {
+        status = await fetch(url, { redirect: "manual" }).then(response => {
+          return response.status;
+        });
+        return status;
+      });
+      const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
+      res.json(mergedList);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+});
 
-  let statusList = await Promise.map(urlList, async url => {
-    status = await fetch(url, { redirect: "manual" }).then(response => {
-      return response.status;
-    });
-    return status;
-  });
+router.post("/serverResponse/", async (req, res) => {
+  if (!req.body.url && !req.body.mainVersion) {
+    res.status(401).json({ message: "Выберите основную версию сайта" });
+  } else {
+    let url = req.body.url;
+    let mainVersion = req.body.mainVersion;
+    let urlList = [
+      `${mainVersion}${url}`,
+      `${mainVersion}${url}//`,
+      `${mainVersion}${url}/index`,
+      `${mainVersion}${url}/index.html`,
+      `${mainVersion}${url}/index.php`,
+      `${mainVersion}${url}/page/1`
+    ];
 
-  const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
-
-  res.json(mergedList);
+    try {
+      let statusList = await Promise.map(urlList, async url => {
+        status = await fetch(url, { redirect: "manual" }).then(response => {
+          return response.status;
+        });
+        return status;
+      });
+      const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
+      res.json(mergedList);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
 });
 
 router.delete("/:id", getResult, async (req, res) => {

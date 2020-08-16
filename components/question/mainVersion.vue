@@ -15,7 +15,7 @@ export default {
   data: () => ({
     statusList: []
   }),
-  props: ["url", "mainVersion"],
+  props: ["url"],
 
   methods: {
     isOk(code) {
@@ -26,11 +26,10 @@ export default {
   },
   mounted() {
     let formData = {
-      url: this.url,
-      mainVersion: this.mainVersion
+      url: this.url
     };
     axios
-      .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
+      .post(`${process.env.baseUrl}/api/result/mainVersion/`, formData)
       .then(response => {
         this.statusList = response.data;
       })

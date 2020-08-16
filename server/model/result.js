@@ -15,6 +15,9 @@ const resultSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  mainVersion: {
+    type: String
+  },
   email: {
     type: String
   },
