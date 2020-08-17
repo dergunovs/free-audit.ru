@@ -107,7 +107,7 @@ router.post("/mainVersion/", async (req, res) => {
     res.status(401).json({ message: "Введите адрес сайта" });
   } else {
     let url = req.body.url;
-    let urlList = [`http://${url}`, `https://${url}`, `http://www.${url}`, `https://www.${url}`];
+    let urlList = [`http://${url}`, `http://www.${url}`, `https://${url}`, `https://www.${url}`];
     try {
       let statusList = await Promise.map(urlList, async url => {
         status = await fetch(url, { redirect: "manual" }).then(response => {

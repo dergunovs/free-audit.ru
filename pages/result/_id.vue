@@ -46,7 +46,12 @@
       </div>
 
       <div class="group w100">
-        <component :is="question.feature" :url="result.url" :mainVersion="question.answer_picked" />
+        <component
+          :is="question.feature"
+          :url="result.url"
+          :answers="question.answers"
+          :answerPicked="question.answer_picked"
+        />
       </div>
 
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">

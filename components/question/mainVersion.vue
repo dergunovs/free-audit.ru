@@ -15,13 +15,27 @@ export default {
   data: () => ({
     statusList: []
   }),
-  props: ["url"],
-
+  props: ["url", "answers", "answerPicked"],
+  computed: {
+    urlPicked: function() {
+      return this.answers.filter(answer => {
+        if (answer._id == this.answerPicked) {
+          return answer;
+        }
+      });
+    }
+  },
   methods: {
     isOk(code) {
       if (code == "200") {
         return true;
       }
+    }
+  },
+  watch: {
+    answerPicked: function() {
+      let mainVersion = this.urlPicked[0].name;
+      this.$store.commit("saveMainVersion", mainVersion);
     }
   },
   mounted() {
@@ -34,6 +48,8 @@ export default {
         this.statusList = response.data;
       })
       .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    let mainVersion = this.urlPicked[0].name;
+    this.$store.commit("saveMainVersion", mainVersion);
   }
 };
 </script>
