@@ -34,8 +34,8 @@ export default {
   },
   watch: {
     answerPicked: function() {
-      let mainVersion = this.urlPicked[0].name;
-      this.$store.commit("saveMainVersion", mainVersion);
+      let urlPrefix = this.urlPicked[0].name;
+      this.$store.commit("saveUrlPrefix", urlPrefix);
     }
   },
   mounted() {
@@ -43,13 +43,13 @@ export default {
       url: this.url
     };
     axios
-      .post(`${process.env.baseUrl}/api/result/mainVersion/`, formData)
+      .post(`${process.env.baseUrl}/api/result/urlPrefix/`, formData)
       .then(response => {
         this.statusList = response.data;
       })
       .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    let mainVersion = this.urlPicked[0].name;
-    this.$store.commit("saveMainVersion", mainVersion);
+    let urlPrefix = this.urlPicked[0].name;
+    this.$store.commit("saveUrlPrefix", urlPrefix);
   }
 };
 </script>

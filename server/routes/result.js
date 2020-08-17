@@ -102,7 +102,7 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/mainVersion/", async (req, res) => {
+router.post("/urlPrefix/", async (req, res) => {
   if (!req.body.url) {
     res.status(401).json({ message: "Введите адрес сайта" });
   } else {
@@ -124,18 +124,18 @@ router.post("/mainVersion/", async (req, res) => {
 });
 
 router.post("/serverResponse/", async (req, res) => {
-  if (!req.body.url && !req.body.mainVersion) {
+  if (!req.body.url && !req.body.urlPrefix) {
     res.status(401).json({ message: "Выберите основную версию сайта" });
   } else {
     let url = req.body.url;
-    let mainVersion = req.body.mainVersion;
+    let urlPrefix = req.body.urlPrefix;
     let urlList = [
-      `${mainVersion}${url}`,
-      `${mainVersion}${url}//`,
-      `${mainVersion}${url}/index`,
-      `${mainVersion}${url}/index.html`,
-      `${mainVersion}${url}/index.php`,
-      `${mainVersion}${url}/page/1`
+      `${urlPrefix}${url}`,
+      `${urlPrefix}${url}//`,
+      `${urlPrefix}${url}/index`,
+      `${urlPrefix}${url}/index.html`,
+      `${urlPrefix}${url}/index.php`,
+      `${urlPrefix}${url}/page/1`
     ];
 
     try {

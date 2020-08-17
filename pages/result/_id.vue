@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import Vue from "vue";
 import axios from "axios";
 
 import Editor from "@tinymce/tinymce-vue";
@@ -131,9 +132,7 @@ export default {
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver,
-    serverResponse: () => import("~/components/question/serverResponse.vue"),
-    mainVersion: () => import("~/components/question/mainVersion.vue")
+    ValidationObserver
   },
   methods: {
     resultUpdate() {
@@ -188,6 +187,15 @@ export default {
       };
       axios.post(`${process.env.baseUrl}/api/email`, formDataEmail);
     }
+  },
+  created() {
+    const getComponents = require.context("~/components/question", false, /\.vue$/);
+
+    getComponents.keys().forEach(file => {
+      const componentConfig = getComponents(file);
+      const componentName = file.replace(/(^.\/)|(\.vue$)/g, "");
+      Vue.component(componentName, componentConfig.default || componentConfig);
+    });
   }
 };
 </script>

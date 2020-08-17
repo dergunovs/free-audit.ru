@@ -1,13 +1,13 @@
 export const state = () => ({
   resultPassword: "",
-  mainVersion: ""
+  urlPrefix: ""
 });
 
 export const mutations = {
   toggleAdminMenu(state, payload) {
     state.resultPassword = payload;
   },
-  saveMainVersion(state, payload) {
-    state.mainVersion = payload;
+  saveUrlPrefix(state, payload) {
+    state.urlPrefix = payload;
   }
 };

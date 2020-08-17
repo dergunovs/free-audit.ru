@@ -17,8 +17,8 @@ export default {
   }),
   props: ["url"],
   computed: {
-    mainVersion() {
-      return this.$store.state.mainVersion;
+    urlPrefix() {
+      return this.$store.state.urlPrefix;
     }
   },
   methods: {
@@ -29,10 +29,10 @@ export default {
     }
   },
   watch: {
-    mainVersion: function() {
+    urlPrefix: function() {
       let formData = {
         url: this.url,
-        mainVersion: this.mainVersion
+        urlPrefix: this.urlPrefix
       };
       axios
         .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
@@ -45,7 +45,7 @@ export default {
   mounted() {
     let formData = {
       url: this.url,
-      mainVersion: this.mainVersion
+      urlPrefix: this.urlPrefix
     };
     axios
       .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
