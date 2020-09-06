@@ -66,6 +66,7 @@ import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
+  layout: "admin",
   data: () => ({
     name: "",
     introtext: "",
@@ -76,6 +77,9 @@ export default {
     Editor,
     ValidationProvider,
     ValidationObserver
+  },
+  head: {
+    title: "Создать новый аудит"
   },
   methods: {
     auditCreate() {

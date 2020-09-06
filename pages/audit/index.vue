@@ -31,6 +31,9 @@ export default {
         $nuxt.$auth.logout();
       }
     }
+  },
+  head: {
+    title: "Список аудитов"
   }
 };
 </script>

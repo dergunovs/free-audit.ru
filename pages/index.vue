@@ -49,6 +49,16 @@ export default {
     ValidationProvider,
     ValidationObserver
   },
+  head: {
+    title: "Бесплатный онлайн аудит сайта free-audit.ru",
+    meta: [
+      {
+        hid: "description",
+        name: "description",
+        content: "Бесплатный онлайн аудит сайта free-audit.ru - технический, юзабилити, seo аудит."
+      }
+    ]
+  },
   methods: {
     resultCreate() {
       let formData = {

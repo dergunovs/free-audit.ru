@@ -122,6 +122,11 @@ export default {
     ValidationObserver,
     draggable
   },
+  head() {
+    return {
+      title: this.audit.name + " - редактировать"
+    };
+  },
   methods: {
     auditUpdate() {
       let formData = {

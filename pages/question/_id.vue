@@ -166,6 +166,11 @@ export default {
     ValidationObserver,
     answerAdd: () => import("~/components/answerAdd.vue")
   },
+  head() {
+    return {
+      title: this.question.name + "редактировать"
+    };
+  },
   methods: {
     questionUpdate() {
       let formData = {

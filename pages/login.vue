@@ -31,6 +31,7 @@ export default {
   },
   head() {
     return {
+      title: "Войти в админку free-audit.ru",
       meta: [{ name: "robots", content: "noindex,nofollow" }]
     };
   },

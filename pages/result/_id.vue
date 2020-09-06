@@ -94,7 +94,7 @@
       </div>
       <div class="group w12 button-bottom">
         <button class="input button" v-on:click="resultUpdate">
-          Обновить
+          Сохранить
         </button>
       </div>
     </div>
@@ -133,6 +133,11 @@ export default {
     Editor,
     ValidationProvider,
     ValidationObserver
+  },
+  head() {
+    return {
+      title: this.result.audit._id.name + " сайта " + this.result.url
+    };
   },
   methods: {
     resultUpdate() {
