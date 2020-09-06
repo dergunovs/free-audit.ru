@@ -48,8 +48,10 @@ export default {
         this.statusList = response.data;
       })
       .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    let urlPrefix = this.urlPicked[0].name;
-    this.$store.commit("saveUrlPrefix", urlPrefix);
+    if (this.urlPicked[0]) {
+      let urlPrefix = this.urlPicked[0].name;
+      this.$store.commit("saveUrlPrefix", urlPrefix);
+    }
   }
 };
 </script>
