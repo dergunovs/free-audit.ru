@@ -1,10 +1,10 @@
 <template>
   <div>
     <h1>Бесплатный онлайн аудит сайта</h1>
-    <ValidationObserver class="form form-center" v-slot="{ invalid }" tag="div">
-      <ValidationProvider rules="required" v-slot="{ errors }" class="group w12" tag="div">
+    <ValidationObserver class="form form-center form-main" v-slot="{ invalid }" tag="div">
+      <ValidationProvider rules="required" v-slot="{ errors }" class="group w25" tag="div">
         <select v-model="audit" class="input">
-          <option value="">Выбрать тип аудита</option>
+          <option value="">Выберите аудит</option>
           <option v-for="audit in audits" :key="audit.index" :value="audit._id">{{ audit.name }}</option>
         </select>
         <span class="error-message">{{ errors[0] }}</span>
@@ -15,13 +15,13 @@
           regex: /^([\w\.а-яёА-ЯЁ-]+)\.([a-zA-Zа-яёА-ЯЁ-]{2,6}\.?)(\/[\w\.]*)*\/?$/
         }"
         v-slot="{ errors }"
-        class="group w25"
+        class="group w50"
         tag="div"
       >
         <input type="text" v-model="url" placeholder="Введите адрес сайта без www, http или https" class="input" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
-      <div class="group w12 button-bottom">
+      <div class="group w25 button-bottom">
         <button v-on:click="resultCreate" :disabled="invalid" class="input button">Начать аудит</button>
       </div>
     </ValidationObserver>

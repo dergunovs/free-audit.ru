@@ -1,6 +1,6 @@
 <template>
   <ValidationObserver class="form" v-slot="{ invalid }" tag="div">
-    <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
+    <ValidationProvider rules="required|max:28" v-slot="{ errors }" class="group w100" tag="div">
       <label for="answer-name-new">Текст ответа</label>
       <input id="answer-name-new" type="text" v-model="answer.name" class="input" />
       <span class="error-message">{{ errors[0] }}</span>
@@ -40,7 +40,8 @@ import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
   data: () => ({
-    answer: { name: "", recomendation: "" }
+    answer: { name: "", recomendation: "" },
+    tinyKey: process.env.tinyKey
   }),
   components: {
     Editor,

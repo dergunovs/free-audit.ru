@@ -122,11 +122,15 @@ header {
   flex-wrap: wrap;
   z-index: 1;
   width: 100%;
+  &.form-main {
+    max-width: 800px;
+  }
   &.form-half-width {
     width: 50%;
   }
   &.form-center {
     justify-content: center;
+    margin: 0 auto;
   }
   &.form-result {
     margin: 48px auto;
@@ -317,4 +321,105 @@ header {
 }
 .result-margin-bottom {
   margin-bottom: 96px;
+}
+
+@media screen and (max-width: 960px) {
+  .form {
+    .w25 {
+      width: 50%;
+    }
+    .w12 {
+      width: 25%;
+    }
+    .group {
+      input[type="radio"]:checked + label + .answer-text {
+        width: calc(200% + 16px);
+        &.answer2 {
+          margin-left: 0;
+        }
+        &.answer3 {
+          margin-left: calc(-100% - 16px);
+        }
+      }
+    }
+  }
+  .form-main {
+    .w25 {
+      width: 25%;
+    }
+  }
+}
+
+@media screen and (max-width: 730px) {
+  h1 {
+    font-size: 20px;
+  }
+  h2 {
+    font-size: 18px;
+  }
+  .center {
+    width: calc(100% - 20px);
+  }
+  header {
+    .center {
+      width: 100%;
+      flex-direction: column-reverse;
+      .toggle-nav {
+        display: block;
+        padding: 4px 14px;
+        font-size: 28px;
+        text-align: right;
+      }
+      nav {
+        display: none;
+        flex-wrap: wrap;
+        &.navShow {
+          display: flex;
+        }
+        a {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .form {
+    &.form-half-width {
+      width: 100%;
+    }
+    &.form-result {
+      padding: 12px;
+    }
+    .w50 {
+      width: 100%;
+    }
+    .w25 {
+      width: 50%;
+    }
+    .w12 {
+      width: 50%;
+    }
+    .group {
+      .button {
+        padding: 8px 12px;
+      }
+      input[type="radio"] + label {
+        padding: 8px;
+      }
+    }
+  }
+  .form-main {
+    .w50 {
+      width: 100%;
+      order: 0;
+    }
+    .w25 {
+      width: 50%;
+      order: 1;
+    }
+  }
+  .tag-list {
+    .tag {
+      display: inline-block;
+    }
+  }
 }

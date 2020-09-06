@@ -3,7 +3,7 @@
     <h1>{{ question.name }}</h1>
     <div class="text-center">Дата создания {{ $dateFns.format(new Date(question.date_created), "dd.MM.yyyy г.") }}</div>
     <div class="tag-list" v-if="audits.length">
-      Используется в аудитах:
+      <span>Используется в аудитах:</span>
       <span v-for="audit in audits" :key="audit.index" class="tag">
         <nuxt-link :to="`/audit/${audit._id}`">{{ audit.name }}</nuxt-link>
       </span>
@@ -79,7 +79,7 @@
         v-slot="{ invalid }"
         tag="div"
       >
-        <ValidationProvider rules="required" v-slot="{ errors }" class="group w100" tag="div">
+        <ValidationProvider rules="required|max:28" v-slot="{ errors }" class="group w100" tag="div">
           <label :for="`name${answer._id}`">Текст ответа</label>
           <input type="text" v-model="answer.name" class="input" :ref="`name${answer._id}`" :id="`name${answer._id}`" />
           <span class="error-message">{{ errors[0] }}</span>
