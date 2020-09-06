@@ -6,7 +6,14 @@
       Разработка сервиса происходит в прямом эфире
       <a href="https://www.youtube.com/playlist?list=PLOICX-WjKEZetz86Evsf7pvVd6qzGT_rg" target="_blank">на ютубе.</a>
     </p>
-    <p>Автор проекта Александр Дергунов.</p>
+    <p>
+      Исходный код и инструкция по установке находится
+      <a href="https://github.com/dergunovs/free-audit.ru" target="_blank">на Гитхабе.</a>
+    </p>
+    <p>
+      Автор проекта Александр Дергунов. Если вы желаете поучаствовать в разработке проекта, то напишите мне любым
+      удобным для вас способом.
+    </p>
     <h2>Контакты</h2>
     <p>Сайт: <a href="https://dergunov.com" target="_blank">dergunov.com</a></p>
     <p>Электронная почта: <a href="mailto:a@dergunov.com" target="_blank">a@dergunov.com</a></p>

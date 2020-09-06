@@ -4,7 +4,7 @@ module.exports = {
   mode: "universal",
 
   server: {
-    port: 3000,
+    port: 5000,
     host: "localhost"
   },
 
