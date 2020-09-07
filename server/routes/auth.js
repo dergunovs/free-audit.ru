@@ -17,7 +17,7 @@ app.use(
 );
 
 router.post("/login", (req, res) => {
-  if (req.body.user === process.env.USER && req.body.password === process.env.PASSWORD) {
+  if (req.body.user === process.env.LOGIN && req.body.password === process.env.PASSWORD) {
     jwt.sign({ user: req.body.user }, process.env.SECRET, { expiresIn: "1d" }, async function(err, token) {
       res.json({ token: token, user: req.body.user });
     });
