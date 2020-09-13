@@ -1,11 +1,9 @@
 <template>
   <div>
-    <div v-for="status in statusList" :key="status.index">
-      <div v-for="(code, url) in status" :key="code">
-        <a :href="`${url}`" target="_blank" rel="nofollow">{{ url }}</a> -
-        <b v-bind:class="{ green: isOk(code) }">{{ code }}</b>
-      </div>
-    </div>
+    <a :href="`${urlPrefix}${url}/check404error`" target="_blank" rel="nofollow">
+      {{ urlPrefix }}{{ url }}/check404error
+    </a>
+    - <b v-bind:class="{ green: isOk(status) }">{{ status }}</b>
   </div>
 </template>
 
@@ -14,7 +12,7 @@ import axios from "axios";
 
 export default {
   data: () => ({
-    statusList: []
+    status: ""
   }),
   props: ["url"],
   computed: {
@@ -24,7 +22,7 @@ export default {
   },
   methods: {
     isOk(code) {
-      if (code == "200") {
+      if (code == "404") {
         return true;
       }
     }
@@ -36,9 +34,9 @@ export default {
         urlPrefix: this.urlPrefix
       };
       axios
-        .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
+        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
         .then(response => {
-          this.statusList = response.data;
+          this.status = response.data;
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
@@ -50,9 +48,9 @@ export default {
         urlPrefix: this.urlPrefix
       };
       axios
-        .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
+        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
         .then(response => {
-          this.statusList = response.data;
+          this.status = response.data;
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }

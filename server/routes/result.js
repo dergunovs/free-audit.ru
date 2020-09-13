@@ -161,6 +161,27 @@ router.post("/serverResponse/", async (req, res) => {
   }
 });
 
+router.post("/check404/", async (req, res) => {
+  if (!req.body.url && !req.body.urlPrefix) {
+    res.status(401).json({ message: "Выберите основную версию сайта" });
+  } else {
+    let url = req.body.url;
+    let urlPrefix = req.body.urlPrefix;
+    try {
+      let status = await fetch(`${urlPrefix}${url}/check404error`, { redirect: "manual" })
+        .then(response => {
+          return response.status;
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+      res.json(status);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+});
+
 router.delete("/:id", getResult, async (req, res) => {
   if (req.headers.authorization === undefined) {
     res.status(403).json({ message: "Токен не распознан" });

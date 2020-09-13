@@ -2,7 +2,8 @@
   <div>
     <div v-for="status in statusList" :key="status.index">
       <div v-for="(code, url) in status" :key="code">
-        {{ url }} - <b v-bind:class="{ green: isOk(code) }">{{ code }}</b>
+        <a :href="`${url}`" target="_blank" rel="nofollow">{{ url }}</a> -
+        <b v-bind:class="{ green: isOk(code) }">{{ code }}</b>
       </div>
     </div>
   </div>
