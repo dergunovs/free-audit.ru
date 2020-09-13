@@ -110,9 +110,13 @@ router.post("/urlPrefix/", async (req, res) => {
     let urlList = [`http://${url}`, `http://www.${url}`, `https://${url}`, `https://www.${url}`];
     try {
       let statusList = await Promise.map(urlList, async url => {
-        status = await fetch(url, { redirect: "manual" }).then(response => {
-          return response.status;
-        });
+        status = await fetch(url, { redirect: "manual" })
+          .then(response => {
+            return response.status;
+          })
+          .catch(error => {
+            return "Ошибка сервера";
+          });
         return status;
       });
       const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
@@ -140,9 +144,13 @@ router.post("/serverResponse/", async (req, res) => {
 
     try {
       let statusList = await Promise.map(urlList, async url => {
-        status = await fetch(url, { redirect: "manual" }).then(response => {
-          return response.status;
-        });
+        status = await fetch(url, { redirect: "manual" })
+          .then(response => {
+            return response.status;
+          })
+          .catch(error => {
+            return "Ошибка сервера";
+          });
         return status;
       });
       const mergedList = urlList.reduce((obj, key, index) => [...obj, { [key]: statusList[index] }], []);
