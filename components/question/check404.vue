@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="status">
     <a :href="`${urlPrefix}${url}/check404error`" target="_blank" rel="nofollow">
       {{ urlPrefix }}{{ url }}/check404error
     </a>
