@@ -230,9 +230,9 @@ export default {
     answerDelete(answer) {
       axios
         .delete(`${process.env.baseUrl}/api/question/${this.question._id}/answer`, {
-          data: { answerId: answer._id },
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
+            Authorization: this.$auth.$storage._state["_token.local"],
+            answerId: answer._id
           }
         })
         .then(response => {

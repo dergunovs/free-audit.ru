@@ -1,6 +1,8 @@
 .editorconfig
 .prettierrt
 package-lock.json
+google*
+yandex*
 
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template

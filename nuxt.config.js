@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 module.exports = {
-  mode: "universal",
+  ssr: true,
 
   server: {
     port: 5000,

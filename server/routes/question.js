@@ -168,10 +168,10 @@ router.delete("/:id/answer", async (req, res) => {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
-        let DeletedAnswer = { _id: req.body.answerId };
+        let deletedAnswer = { _id: req.headers.answerid };
         res.question = await Question.findOneAndUpdate(
           { _id: req.params.id },
-          { $pull: { answers: DeletedAnswer } },
+          { $pull: { answers: deletedAnswer } },
           { returnOriginal: false }
         );
         try {
