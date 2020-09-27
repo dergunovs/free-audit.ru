@@ -35,7 +35,16 @@ module.exports = {
 
   dateFns: { defaultLocale: "ru" },
 
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/toast"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth", "@nuxtjs/toast", "@nuxtjs/pwa"],
+
+  pwa: {
+    manifest: {
+      name: "free-audit.ru",
+      lang: "ru",
+      theme_color: "#000000",
+      description: "Бесплатный аудит сайта"
+    }
+  },
 
   axios: { proxy: true },
 
