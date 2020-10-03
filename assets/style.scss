@@ -310,6 +310,16 @@ header {
     .list-item-link {
       font-size: 18px;
     }
+    .list-item-delete {
+      font-size: 10px;
+      margin-left: 2px;
+      background-color: #ccc;
+      color: #fff;
+      padding: 3px 6px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-weight: 700;
+    }
     .list-item-text {
       line-height: 1.2;
     }
