@@ -3,11 +3,11 @@
     <h1>Результаты аудитов</h1>
     <div class="list-block">
       <div v-for="result in results" :key="result.index" class="list-item">
-        <nuxt-link :to="`/result/${result._id}`" class="list-item-link">
-          {{ result.url }}
-        </nuxt-link>
-        <br />
-        {{ result.audit._id.name }}, {{ $dateFns.format(new Date(result.date_created), "HH:mm dd.MM.yyyy г.") }}
+        <nuxt-link :to="`/result/${result._id}`" class="list-item-link">{{ result.url }}</nuxt-link>
+        {{ result.audit._id.name }}, {{ $dateFns.format(new Date(result.date_created), "dd.MM.yyyy г. HH:mm") }}
+        <span v-if="result.passwordCreated">
+          - <b>Доступ создан</b>, <a :href="`mailto:${result.email}`">{{ result.email }}</a>
+        </span>
       </div>
     </div>
   </div>

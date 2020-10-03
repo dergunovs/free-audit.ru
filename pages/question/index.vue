@@ -11,7 +11,13 @@
         <nuxt-link :to="`/question/${question._id}`" class="list-item-link">
           {{ question.name }}
         </nuxt-link>
+        <div>
+          <b>{{ question.level }}</b>
+        </div>
         <div class="list-item-text" v-html="question.introtext"></div>
+        <div>
+          <b>Создан: {{ $dateFns.format(new Date(question.date_created), "dd.MM.yyyy г. HH:mm") }}</b>
+        </div>
       </div>
     </div>
   </div>

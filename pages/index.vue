@@ -75,6 +75,11 @@ export default {
         })
         .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
+  },
+  mounted() {
+    if (!this.$auth.loggedIn) {
+      $nuxt.$auth.logout();
+    }
   }
 };
 </script>

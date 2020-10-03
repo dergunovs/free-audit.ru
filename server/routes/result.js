@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
       } else {
         try {
           const results = await Result.find()
-            .select("_id audit url date_created")
+            .select("_id audit url date_created email passwordCreated")
             .populate({
               path: "audit._id",
               select: "name"

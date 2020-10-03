@@ -53,20 +53,30 @@
 
       <div class="group w50">
         <h2>Текущие вопросы</h2>
-        <draggable v-model="questions" group="questions" @start="drag = true" @end="drag = false">
+        <draggable
+          v-model="questions"
+          group="questions"
+          @start="drag = true"
+          @end="drag = false"
+          class="question-draggable-list"
+        >
           <div v-for="question in questions" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
-            <div>{{ question.level }}</div>
             <nuxt-link :to="`/question/${question._id}`">Редактировать</nuxt-link>
           </div>
         </draggable>
       </div>
       <div class="group w50">
         <h2>Общий список вопросов</h2>
-        <draggable v-model="questionsList" group="questions" @start="drag = true" @end="drag = false">
+        <draggable
+          v-model="questionsList"
+          group="questions"
+          @start="drag = true"
+          @end="drag = false"
+          class="question-draggable-list"
+        >
           <div v-for="question in questionsList" :key="question.index" class="question-draggable">
             <div class="question-name">{{ question.name }}</div>
-            <div>{{ question.level }}</div>
             <nuxt-link :to="`/question/${question._id}`">Редактировать</nuxt-link>
           </div>
         </draggable>

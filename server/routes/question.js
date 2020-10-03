@@ -23,8 +23,8 @@ const upload = multer({
 router.get("/", async (req, res) => {
   try {
     const questions = await Question.find()
-      .select("_id name introtext level")
-      .sort("name")
+      .select("_id name introtext level date_created")
+      .sort("-date_created")
       .lean()
       .exec();
     res.json(questions);

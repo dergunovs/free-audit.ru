@@ -67,7 +67,7 @@
           :id="`comment${question._id}`"
           :api-key="tinyKey"
           :init="{
-            height: 270,
+            height: 160,
             menubar: false,
             language: 'ru',
             plugins: ['autolink lists link table'],
