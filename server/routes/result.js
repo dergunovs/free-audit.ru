@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const Promise = require("bluebird");
 const Result = require("../model/result");
 const Question = require("../model/question");
-const result = require("../model/result");
 
 router.get("/", async (req, res) => {
   if (req.headers.authorization === undefined) {
