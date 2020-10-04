@@ -1,8 +1,6 @@
 <template>
   <div v-if="status">
-    <a :href="`${urlPrefix}${url}/check404error`" target="_blank" rel="nofollow">
-      {{ urlPrefix }}{{ url }}/check404error</a
-    >
+    <a :href="`${urlPrefix}${url}/robots.txt`" target="_blank" rel="nofollow">{{ urlPrefix }}{{ url }}/robots.txt</a>
     - <b v-bind:class="{ green: isOk(status) }">{{ status }}</b>
   </div>
 </template>
@@ -22,7 +20,7 @@ export default {
   },
   methods: {
     isOk(code) {
-      if (code == "404") {
+      if (code == "200") {
         return true;
       }
     }
@@ -34,7 +32,7 @@ export default {
         urlPrefix: this.urlPrefix
       };
       axios
-        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
+        .post(`${process.env.baseUrl}/api/result/checkRobots/`, formData)
         .then(response => {
           this.status = response.data;
         })
@@ -48,7 +46,7 @@ export default {
         urlPrefix: this.urlPrefix
       };
       axios
-        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
+        .post(`${process.env.baseUrl}/api/result/checkRobots/`, formData)
         .then(response => {
           this.status = response.data;
         })

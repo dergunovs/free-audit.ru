@@ -1,7 +1,7 @@
 <template>
   <div>
     <headerComponent />
-    <div class="center">
+    <div class="content center">
       <nuxt />
     </div>
   </div>
