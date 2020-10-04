@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const Promise = require("bluebird");
 const Result = require("../model/result");
 const Question = require("../model/question");
+const result = require("../model/result");
 
 router.get("/", async (req, res) => {
   if (req.headers.authorization === undefined) {
@@ -176,6 +177,109 @@ router.post("/check404/", async (req, res) => {
           return "Ошибка сервера";
         });
       res.json(status);
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  }
+});
+
+router.post("/checkIndex/", async (req, res) => {
+  if (!req.body.url && !req.body.urlPrefix) {
+    res.status(401).json({ message: "Выберите основную версию сайта" });
+  } else {
+    let url = req.body.url;
+    try {
+      let yaResponse = await fetch(
+        `https://yandex.ru/search/xml?user=${process.env.YANDEX_USER}&key=${process.env.YANDEX_KEY}&query=host%3A${url}&l10n=ru&sortby=tm.order%3Dascending&filter=strict&groupby=attr%3D%22%22.mode%3Dflat.groups-on-page%3D10.docs-in-group%3D1`
+      )
+        .then(response => {
+          return response.text();
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+
+      function getSecondYandexResponse() {
+        let promise = new Promise((resolve, reject) => {
+          setTimeout(async () => {
+            let yaResponseWWW = await fetch(
+              `https://yandex.ru/search/xml?user=${process.env.YANDEX_USER}&key=${process.env.YANDEX_KEY}&query=host%3Awww.${url}&l10n=ru&sortby=tm.order%3Dascending&filter=strict&groupby=attr%3D%22%22.mode%3Dflat.groups-on-page%3D10.docs-in-group%3D1`
+            )
+              .then(response => {
+                return response.text();
+              })
+              .catch(error => {
+                return "Ошибка сервера";
+              });
+            resolve(yaResponseWWW);
+          }, 1000);
+        });
+
+        let yaResponseWWW = promise;
+        return yaResponseWWW;
+      }
+
+      let yaResponseWWW = await getSecondYandexResponse();
+
+      let gResponse = await fetch(
+        `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20-inurl%3Awww%20-inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+
+      let gResponseWWW = await fetch(
+        `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20inurl%3Awww%20-inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+
+      let gResponseHttps = await fetch(
+        `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20-inurl%3Awww%20inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+
+      let gResponseHttpsWWW = await fetch(
+        `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20inurl%3Awww%20inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
+      )
+        .then(response => {
+          return response.json();
+        })
+        .catch(error => {
+          return "Ошибка сервера";
+        });
+
+      let startYaSplit = `all">`;
+      let endYaSplit = `</`;
+      let yaPagesNumber =
+        yaResponse.search("error code") != -1 ? 0 : yaResponse.split(startYaSplit)[1].split(endYaSplit)[0];
+      let yaPagesNumberWWW =
+        yaResponseWWW.search("error code") != -1 ? 0 : yaResponseWWW.split(startYaSplit)[1].split(endYaSplit)[0];
+      let gPagesNumber = gResponse.searchInformation.totalResults;
+      let gPagesNumberWWW = gResponseWWW.searchInformation.totalResults;
+      let gPagesNumberHttps = gResponseHttps.searchInformation.totalResults;
+      let gPagesNumberHttpsWWW = gResponseHttpsWWW.searchInformation.totalResults;
+
+      res.json({
+        yaPagesNumber,
+        yaPagesNumberWWW,
+        gPagesNumber,
+        gPagesNumberWWW,
+        gPagesNumberHttps,
+        gPagesNumberHttpsWWW
+      });
     } catch (err) {
       res.status(500).json({ message: err.message });
     }
