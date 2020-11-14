@@ -104,7 +104,7 @@ router.post("/", async (req, res) => {
 
 router.post("/urlPrefix/", async (req, res) => {
   if (!req.body.url) {
-    res.status(401).json({ message: "Введите адрес сайта" });
+    res.status(401).json({ message: "Нет адреса сайта" });
   } else {
     let url = req.body.url;
     let urlList = [`http://${url}`, `http://www.${url}`, `https://${url}`, `https://www.${url}`];
@@ -183,8 +183,8 @@ router.post("/check404/", async (req, res) => {
 });
 
 router.post("/checkIndex/", async (req, res) => {
-  if (!req.body.url && !req.body.urlPrefix) {
-    res.status(401).json({ message: "Выберите основную версию сайта" });
+  if (!req.body.url) {
+    res.status(401).json({ message: "Нет адреса сайта" });
   } else {
     let url = req.body.url;
     try {
