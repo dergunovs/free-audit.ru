@@ -8,19 +8,18 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 router.post("/", (req, res) => {
-  if (req.body.email && req.body.password && req.headers.referer) {
+  if (req.body.email && req.headers.referer) {
     email = req.body.email;
-    password = req.body.password;
     url = req.headers.referer;
 
-    sendMail(email, password, url);
+    sendMail(email, url);
     res.status(200).json("Сообщение отправлено");
   } else {
     res.status(500).json({ message: "Не хватает данных для отправки почты" });
   }
 });
 
-const sendMail = (email, password, url) => {
+const sendMail = (email, url) => {
   let transporter = nodemailer.createTransport({
     host: process.env.EMAIL_SMTP,
     port: 465,
@@ -33,16 +32,9 @@ const sendMail = (email, password, url) => {
   transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
-    subject: "Доступы к аудиту на free-audit.ru",
-    html:
-      "<h1>Доступы к аудиту на free-audit.ru</h1>" +
-      "<p><b>Пароль:</b> " +
-      password +
-      "</p><p><b>Ссылка на аудит:</b> <a href='" +
-      url +
-      "'>" +
-      url +
-      "</a></p>"
+    subject: "Ссылка на аудит free-audit.ru",
+    html: `<h1>Ссылка на аудит free-audit.ru</h1>
+      <p><b>Ссылка на аудит:</b> <a href='${url}'>${url}</a></p>`
   });
 };
 

@@ -52,6 +52,10 @@ module.exports = {
     "/api/": process.env.BASE_URL
   },
 
+  outer: {
+    prefetchLinks: false
+  },
+
   auth: {
     strategies: {
       local: {

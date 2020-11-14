@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
       } else {
         try {
           const results = await Result.find()
-            .select("_id audit url date_created email passwordCreated")
+            .select("_id audit url date_created email")
             .populate({
               path: "audit._id",
               select: "name"
@@ -40,48 +40,19 @@ router.get("/:id", getResult, (req, res) => {
     _id: res.result._id,
     audit: res.result.audit,
     url: res.result.url,
-    date_created: res.result.date_created,
-    passwordCreated: res.result.passwordCreated
+    date_created: res.result.date_created
   });
 });
 
 router.patch("/:id", getResult, async (req, res) => {
-  const valid = await bcrypt.compare(req.body.passwordCheck, res.result.password);
-  if (!valid) {
-    res.status(401).json({ message: "Неправильный пароль" });
-  } else {
-    res.result.audit.questions = req.body.questions;
-    try {
-      await res.result.save();
-      res.status(200).json({
-        questions: res.result.audit.questions
-      });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  }
-});
-
-router.patch("/:id/password", getResult, async (req, res) => {
-  if (res.result.passwordCreated != false) {
-    res.status(401).json({ message: "Пароль уже установлен" });
-  }
-  if (!req.body.email && !req.body.password) {
-    res.status(401).json({ message: "Заполните почту и пароль" });
-  } else {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    res.result.email = req.body.email;
-    res.result.password = hashedPassword;
-    res.result.passwordCreated = req.body.passwordCreated;
-    try {
-      await res.result.save();
-      res.status(200).json({
-        password: res.result.password,
-        passwordCreated: res.result.passwordCreated
-      });
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
+  res.result.audit.questions = req.body.questions;
+  try {
+    await res.result.save();
+    res.status(200).json({
+      questions: res.result.audit.questions
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -266,11 +237,14 @@ router.post("/checkIndex/", async (req, res) => {
         yaResponse.search("error code") != -1 ? 0 : yaResponse.split(startYaSplit)[1].split(endYaSplit)[0];
       let yaPagesNumberWWW =
         yaResponseWWW.search("error code") != -1 ? 0 : yaResponseWWW.split(startYaSplit)[1].split(endYaSplit)[0];
-      let gPagesNumber = gResponse.searchInformation.totalResults;
-      let gPagesNumberWWW = gResponseWWW.searchInformation.totalResults;
-      let gPagesNumberHttps = gResponseHttps.searchInformation.totalResults;
-      let gPagesNumberHttpsWWW = gResponseHttpsWWW.searchInformation.totalResults;
-
+      let gPagesNumber =
+        gResponse.searchInformation === undefined ? "Ошибка" : gResponse.searchInformation.totalResults;
+      let gPagesNumberWWW =
+        gResponseWWW.searchInformation === undefined ? "Ошибка" : gResponseWWW.searchInformation.totalResults;
+      let gPagesNumberHttps =
+        gResponseHttps.searchInformation === undefined ? "Ошибка" : gResponseHttps.searchInformation.totalResults;
+      let gPagesNumberHttpsWWW =
+        gResponseHttpsWWW.searchInformation === undefined ? "Ошибка" : gResponseHttpsWWW.searchInformation.totalResults;
       res.json({
         yaPagesNumber,
         yaPagesNumberWWW,

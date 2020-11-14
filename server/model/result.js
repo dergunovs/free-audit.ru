@@ -18,13 +18,6 @@ const resultSchema = new mongoose.Schema({
   email: {
     type: String
   },
-  password: {
-    type: String
-  },
-  passwordCreated: {
-    type: Boolean,
-    default: false
-  },
   date_created: {
     type: Date,
     default: Date.now

@@ -1,14 +1,7 @@
 <template>
   <div>
-    <h1>Бесплатный онлайн аудит сайта</h1>
+    <h1>Бесплатный технический онлайн аудит сайта</h1>
     <ValidationObserver class="form form-center form-main" v-slot="{ invalid }" tag="div">
-      <ValidationProvider rules="required" v-slot="{ errors }" class="group w25" tag="div">
-        <select v-model="audit" class="input">
-          <option value="">Выберите аудит</option>
-          <option v-for="audit in audits" :key="audit.index" :value="audit._id">{{ audit.name }}</option>
-        </select>
-        <span class="error-message">{{ errors[0] }}</span>
-      </ValidationProvider>
       <ValidationProvider
         :rules="{
           required: true,
@@ -40,7 +33,7 @@ export default {
   async asyncData() {
     try {
       const data = await axios.get(`${process.env.baseUrl}/api/audit/`);
-      return { audits: data.data };
+      return { audit: data.data[0]._id };
     } catch (err) {
       console.log(err);
     }
