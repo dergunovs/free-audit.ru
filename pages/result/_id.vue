@@ -6,11 +6,11 @@
     </div>
 
     <ValidationObserver class="form form-result-password-save form-center" v-slot="{ invalid }" tag="div">
-      <ValidationProvider rules="required|email" v-slot="{ errors }" class="group w50" tag="div">
+      <ValidationProvider rules="required|email" v-slot="{ errors }" class="group w25" tag="div">
         <label for="email">
-          Выслать на электронную почту ссылку на аудит.
+          Выслать ссылку на аудит на аудит
         </label>
-        <input v-model="email" type="text" id="email" class="input" />
+        <input v-model="email" type="text" id="email" class="input" placeholder="Электронная почта" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
       <div class="group w12 button-bottom">
@@ -54,6 +54,7 @@
         <label :for="`comment${question._id}`">Комментарий</label>
         <Editor
           v-model="question.comment"
+          v-on:onBlur="resultUpdate"
           :id="`comment${question._id}`"
           :api-key="tinyKey"
           :init="{
