@@ -1,14 +1,22 @@
 require("dotenv").config();
 const express = require("express");
 const helmet = require("helmet");
-const consola = require("consola");
 const { Nuxt, Builder } = require("nuxt");
 const app = express();
 const mongoose = require("mongoose");
 mongoose.Schema.Types.Boolean.convertToFalse.add("");
 const bodyParser = require("body-parser");
 
-app.use(helmet());
+app.use(helmet.dnsPrefetchControl());
+app.use(helmet.expectCt());
+app.use(helmet.frameguard());
+app.use(helmet.hidePoweredBy());
+app.use(helmet.hsts());
+app.use(helmet.ieNoOpen());
+app.use(helmet.noSniff());
+app.use(helmet.permittedCrossDomainPolicies());
+app.use(helmet.referrerPolicy());
+app.use(helmet.xssFilter());
 
 mongoose.connect("mongodb://localhost/api", {
   useCreateIndex: true,
@@ -55,9 +63,5 @@ async function start() {
   });
 
   app.listen(port, host);
-  consola.ready({
-    message: `Server listening http://${host}:${port}`,
-    badge: true
-  });
 }
 start();
