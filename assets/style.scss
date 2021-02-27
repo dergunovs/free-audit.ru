@@ -97,28 +97,30 @@ header {
     display: flex;
     justify-content: space-between;
     color: #fff;
-    nav {
-      display: flex;
-      flex-grow: 1;
-      a {
-        color: #fff;
-        padding: 16px;
-        text-decoration: none;
-        line-height: 1;
-        cursor: pointer;
-        &:last-child {
-          margin-left: auto;
-        }
-        &:hover,
-        &.nuxt-link-exact-active {
-          background-color: #444;
-        }
-      }
+  }
+}
+
+nav {
+  display: flex;
+  flex-grow: 1;
+  a {
+    color: #fff;
+    padding: 16px;
+    text-decoration: none;
+    line-height: 1;
+    cursor: pointer;
+    &:last-child {
+      margin-left: auto;
     }
-    .toggle-nav {
-      display: none;
+    &:hover,
+    &.nuxt-link-exact-active {
+      background-color: #444;
     }
   }
+}
+
+.toggle-nav {
+  display: none;
 }
 
 .content {
@@ -173,160 +175,167 @@ header {
   h2 {
     margin: 0;
   }
-  .question-level {
-    width: 100%;
-    color: #666;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 4px;
-    margin-bottom: 12px;
+}
+
+.question-level {
+  width: 100%;
+  color: #666;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-bottom: 12px;
+}
+
+.group {
+  padding: 8px;
+  &.button-bottom {
+    display: flex;
+    flex-direction: column-reverse;
   }
-  .group {
-    padding: 8px;
-    &.button-bottom {
-      display: flex;
-      flex-direction: column-reverse;
-    }
-    input[type="radio"] {
-      display: none;
-      + label {
-        background-color: #eee;
-        padding: 12px;
-        cursor: pointer;
-        width: 100%;
-        text-align: center;
-        border-radius: 8px;
-        + .answer-text {
-          display: none;
-        }
+  input[type="radio"] {
+    display: none;
+    + label {
+      background-color: #eee;
+      padding: 12px;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+      border-radius: 8px;
+      + .answer-text {
+        display: none;
       }
-      &:checked {
-        + label {
-          background-color: $color;
-          color: #fff;
-          + .answer-text {
+    }
+    &:checked {
+      + label {
+        background-color: $color;
+        color: #fff;
+        + .answer-text {
+          display: block;
+          width: calc(400% + 48px);
+          &::before {
+            content: "Рекомендации";
+            font-weight: 700;
+            margin-top: 20px;
             display: block;
-            width: calc(400% + 48px);
-            &::before {
-              content: "Рекомендации";
-              font-weight: 700;
-              margin-top: 20px;
-              display: block;
-            }
-            &.answer1 {
-              margin-left: calc(-100% - 16px);
-            }
-            &.answer2 {
-              margin-left: calc(-200% - 32px);
-            }
-            &.answer3 {
-              margin-left: calc(-300% - 48px);
-            }
+          }
+          &.answer1 {
+            margin-left: calc(-100% - 16px);
+          }
+          &.answer2 {
+            margin-left: calc(-200% - 32px);
+          }
+          &.answer3 {
+            margin-left: calc(-300% - 48px);
           }
         }
       }
     }
-    .error-message {
-      display: block;
-      height: 0;
-      font-size: 12px;
-      line-height: 1.2;
+  }
+  .error-message {
+    display: block;
+    height: 0;
+    font-size: 12px;
+    line-height: 1.2;
+  }
+  label {
+    display: inline-block;
+    margin-bottom: 4px;
+    font-weight: 700;
+  }
+  .input {
+    width: 100%;
+    height: 36px;
+    padding: 8px;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: 0;
+  }
+  .button {
+    border: 0;
+    background-color: $color;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    padding: 8px 32px;
+    width: auto;
+    transition: 1s;
+    text-align: center;
+    text-decoration: none;
+    &.delete {
+      background-color: #444;
     }
-    label {
-      display: inline-block;
-      margin-bottom: 4px;
-      font-weight: 700;
+    &:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
     }
-    .input {
-      width: 100%;
-      height: 36px;
-      padding: 8px;
-      margin: 0;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      outline: 0;
-    }
-    .button {
-      border: 0;
-      background-color: $color;
-      border-radius: 8px;
-      color: #fff;
-      cursor: pointer;
-      padding: 8px 32px;
-      width: auto;
-      transition: 1s;
-      text-align: center;
-      text-decoration: none;
-      &.delete {
-        background-color: #444;
-      }
-      &:disabled {
-        background-color: #aaa;
-        cursor: not-allowed;
-      }
-      &:hover {
-        filter: contrast(1.5);
-      }
-    }
-    .question-draggable-list {
-      margin: 16px 0;
-      background-color: #eee;
-      padding: 8px;
-      .question-draggable {
-        border-top: 1px solid #ccc;
-        border-left: 1px solid #ccc;
-        border-right: 1px solid #ccc;
-        padding: 12px 16px;
-        background-color: #fff;
-        cursor: grab;
-        .question-name {
-          font-size: 18px;
-          font-weight: 700;
-        }
-        &:last-child {
-          border-bottom: 1px solid #ccc;
-        }
-      }
-    }
-
-    .tox-tinymce {
-      border-radius: 8px;
+    &:hover {
+      filter: contrast(1.5);
     }
   }
 }
 
+.question-draggable-list {
+  margin: 16px 0;
+  background-color: #eee;
+  padding: 8px;
+}
+
+.question-draggable {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 12px 16px;
+  background-color: #fff;
+  cursor: grab;
+  .question-name {
+    font-size: 18px;
+    font-weight: 700;
+  }
+  &:last-child {
+    border-bottom: 1px solid #ccc;
+  }
+}
+
+.tox-tinymce {
+  border-radius: 8px;
+}
+
 .tag-list {
   margin: 8px;
-  .tag {
-    margin: 4px;
-    a {
-      padding: 4px;
-      background-color: #eee;
-    }
+}
+
+.tag {
+  margin: 4px;
+  a {
+    padding: 4px;
+    background-color: #eee;
   }
 }
 
 .list-block {
   margin: 16px 8px;
-  .list-item {
-    margin-bottom: 16px;
-    .list-item-link {
-      font-size: 18px;
-    }
-    .list-item-delete {
-      font-size: 10px;
-      margin-left: 2px;
-      background-color: #ccc;
-      color: #fff;
-      padding: 3px 6px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: 700;
-    }
-    .list-item-text {
-      line-height: 1.2;
-    }
-  }
+}
+
+.list-item {
+  margin-bottom: 16px;
+}
+
+.list-item-link {
+  font-size: 18px;
+}
+.list-item-delete {
+  font-size: 10px;
+  margin-left: 2px;
+  background-color: #ccc;
+  color: #fff;
+  padding: 3px 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 700;
+}
+.list-item-text {
+  line-height: 1.2;
 }
 
 .answers-block {
@@ -352,18 +361,20 @@ header {
     .w12 {
       width: 25%;
     }
-    .group {
-      input[type="radio"]:checked + label + .answer-text {
-        width: calc(200% + 16px);
-        &.answer2 {
-          margin-left: 0;
-        }
-        &.answer3 {
-          margin-left: calc(-100% - 16px);
-        }
+  }
+
+  .group {
+    input[type="radio"]:checked + label + .answer-text {
+      width: calc(200% + 16px);
+      &.answer2 {
+        margin-left: 0;
+      }
+      &.answer3 {
+        margin-left: calc(-100% - 16px);
       }
     }
   }
+
   .form-main {
     .w25 {
       width: 25%;
@@ -385,24 +396,27 @@ header {
     .center {
       width: 100%;
       flex-direction: column-reverse;
-      .toggle-nav {
-        display: block;
-        padding: 4px 14px;
-        font-size: 28px;
-        text-align: right;
-      }
-      nav {
-        display: none;
-        flex-wrap: wrap;
-        &.navShow {
-          display: flex;
-        }
-        a {
-          width: 100%;
-        }
-      }
     }
   }
+
+  nav {
+    display: none;
+    flex-wrap: wrap;
+    &.navShow {
+      display: flex;
+    }
+    a {
+      width: 100%;
+    }
+  }
+
+  .toggle-nav {
+    display: block;
+    padding: 4px 14px;
+    font-size: 28px;
+    text-align: right;
+  }
+
   .form {
     &.form-half-width {
       width: 100%;
@@ -419,15 +433,17 @@ header {
     .w12 {
       width: 50%;
     }
-    .group {
-      .button {
-        padding: 8px 12px;
-      }
-      input[type="radio"] + label {
-        padding: 8px;
-      }
+  }
+
+  .group {
+    .button {
+      padding: 8px 12px;
+    }
+    input[type="radio"] + label {
+      padding: 8px;
     }
   }
+
   .form-main {
     .w50 {
       width: 100%;
@@ -438,9 +454,8 @@ header {
       order: 1;
     }
   }
-  .tag-list {
-    .tag {
-      display: inline-block;
-    }
+
+  .tag {
+    display: inline-block;
   }
 }
