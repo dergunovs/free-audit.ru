@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -21,7 +21,7 @@ router.get("/", async (req, res) => {
             .select("_id audit url date_created email")
             .populate({
               path: "audit._id",
-              select: "name"
+              select: "name",
             })
             .sort("-date_created")
             .lean()
@@ -40,7 +40,7 @@ router.get("/:id", getResult, (req, res) => {
     _id: res.result._id,
     audit: res.result.audit,
     url: res.result.url,
-    date_created: res.result.date_created
+    date_created: res.result.date_created,
   });
 });
 
@@ -49,7 +49,7 @@ router.patch("/:id", getResult, async (req, res) => {
   try {
     await res.result.save();
     res.status(200).json({
-      questions: res.result.audit.questions
+      questions: res.result.audit.questions,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -57,12 +57,12 @@ router.patch("/:id", getResult, async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  if (!req.body.audit && !req.body.url) {
+  if (!req.body.auditId && !req.body.url) {
     res.status(401).json({ message: "Нет данных для создания аудита" });
   } else {
     const result = new Result({
-      audit: req.body.audit,
-      url: req.body.url
+      audit: { _id: req.body.auditId },
+      url: req.body.url,
     });
     try {
       await result.save();
@@ -80,12 +80,12 @@ router.post("/urlPrefix/", async (req, res) => {
     let url = req.body.url;
     let urlList = [`http://${url}`, `http://www.${url}`, `https://${url}`, `https://www.${url}`];
     try {
-      let statusList = await Promise.map(urlList, async url => {
+      let statusList = await Promise.map(urlList, async (url) => {
         status = await fetch(url, { redirect: "manual" })
-          .then(response => {
+          .then((response) => {
             return response.status;
           })
-          .catch(error => {
+          .catch((error) => {
             return "Ошибка сервера";
           });
         return status;
@@ -110,16 +110,16 @@ router.post("/serverResponse/", async (req, res) => {
       `${urlPrefix}${url}/index`,
       `${urlPrefix}${url}/index.html`,
       `${urlPrefix}${url}/index.php`,
-      `${urlPrefix}${url}/page/1`
+      `${urlPrefix}${url}/page/1`,
     ];
 
     try {
-      let statusList = await Promise.map(urlList, async url => {
+      let statusList = await Promise.map(urlList, async (url) => {
         status = await fetch(url, { redirect: "manual" })
-          .then(response => {
+          .then((response) => {
             return response.status;
           })
-          .catch(error => {
+          .catch((error) => {
             return "Ошибка сервера";
           });
         return status;
@@ -140,10 +140,10 @@ router.post("/check404/", async (req, res) => {
     let urlPrefix = req.body.urlPrefix;
     try {
       let status = await fetch(`${urlPrefix}${url}/check404error`, { redirect: "manual" })
-        .then(response => {
+        .then((response) => {
           return response.status;
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
       res.json(status);
@@ -162,10 +162,10 @@ router.post("/checkIndex/", async (req, res) => {
       let yaResponse = await fetch(
         `https://yandex.ru/search/xml?user=${process.env.YANDEX_USER}&key=${process.env.YANDEX_KEY}&query=host%3A${url}&l10n=ru&sortby=tm.order%3Dascending&filter=strict&groupby=attr%3D%22%22.mode%3Dflat.groups-on-page%3D10.docs-in-group%3D1`
       )
-        .then(response => {
+        .then((response) => {
           return response.text();
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
 
@@ -175,10 +175,10 @@ router.post("/checkIndex/", async (req, res) => {
             let yaResponseWWW = await fetch(
               `https://yandex.ru/search/xml?user=${process.env.YANDEX_USER}&key=${process.env.YANDEX_KEY}&query=host%3Awww.${url}&l10n=ru&sortby=tm.order%3Dascending&filter=strict&groupby=attr%3D%22%22.mode%3Dflat.groups-on-page%3D10.docs-in-group%3D1`
             )
-              .then(response => {
+              .then((response) => {
                 return response.text();
               })
-              .catch(error => {
+              .catch((error) => {
                 return "Ошибка сервера";
               });
             resolve(yaResponseWWW);
@@ -194,40 +194,40 @@ router.post("/checkIndex/", async (req, res) => {
       let gResponse = await fetch(
         `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20-inurl%3Awww%20-inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
       )
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
 
       let gResponseWWW = await fetch(
         `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20inurl%3Awww%20-inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
       )
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
 
       let gResponseHttps = await fetch(
         `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20-inurl%3Awww%20inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
       )
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
 
       let gResponseHttpsWWW = await fetch(
         `https://customsearch.googleapis.com/customsearch/v1?cx=${process.env.GOOGLE_CX}&q=site%3A${url}%20inurl%3Awww%20inurl%3Ahttps&key=${process.env.GOOGLE_KEY}`
       )
-        .then(response => {
+        .then((response) => {
           return response.json();
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
 
@@ -251,7 +251,7 @@ router.post("/checkIndex/", async (req, res) => {
         gPagesNumber,
         gPagesNumberWWW,
         gPagesNumberHttps,
-        gPagesNumberHttpsWWW
+        gPagesNumberHttpsWWW,
       });
     } catch (err) {
       res.status(500).json({ message: err.message });
@@ -267,10 +267,10 @@ router.post("/checkRobots/", async (req, res) => {
     let urlPrefix = req.body.urlPrefix;
     try {
       let status = await fetch(`${urlPrefix}${url}/robots.txt`, { redirect: "manual" })
-        .then(response => {
+        .then((response) => {
           return response.status;
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
       res.json(status);
@@ -288,10 +288,10 @@ router.post("/checkSitemap/", async (req, res) => {
     let urlPrefix = req.body.urlPrefix;
     try {
       let status = await fetch(`${urlPrefix}${url}/sitemap.xml`, { redirect: "manual" })
-        .then(response => {
+        .then((response) => {
           return response.status;
         })
-        .catch(error => {
+        .catch((error) => {
           return "Ошибка сервера";
         });
       res.json(status);
@@ -306,7 +306,7 @@ router.delete("/:id", getResult, async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -330,8 +330,8 @@ async function getResult(req, res, next) {
         select: "name introtext conclusion questions",
         populate: {
           path: "questions",
-          select: "name introtext level answers feature"
-        }
+          select: "name introtext level answers feature",
+        },
       })
       .exec();
     if (result == null) {
@@ -344,8 +344,8 @@ async function getResult(req, res, next) {
   let questionsDefault = result.audit._id.questions;
   let questionsAnswered = result.audit.questions;
 
-  questionsDefault.map(x => {
-    return questionsAnswered.map(y => {
+  questionsDefault.map((x) => {
+    return questionsAnswered.map((y) => {
       if (y.id === x.id) {
         x.answer_picked = y.answer_picked;
         x.comment = y.comment;

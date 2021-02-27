@@ -22,9 +22,9 @@
             plugins: ['autolink lists link table image'],
             toolbar:
               'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
-            images_upload_handler: function(blobInfo, success) {
+            images_upload_handler: function (blobInfo, success) {
               tinyAddFile(blobInfo, success);
-            }
+            },
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -43,9 +43,9 @@
             plugins: ['autolink lists link table image'],
             toolbar:
               'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
-            images_upload_handler: function(blobInfo, success) {
+            images_upload_handler: function (blobInfo, success) {
               tinyAddFile(blobInfo, success);
-            }
+            },
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
@@ -83,28 +83,29 @@
       </div>
 
       <div class="group w12 button-bottom">
-        <button class="input button" :disabled="invalid" v-on:click="auditUpdate">
-          Обновить
-        </button>
-      </div>
-      <div class="group w12 button-bottom">
-        <button class="input button delete" v-on:click="auditDelete">
-          Удалить
-        </button>
+        <button class="input button" :disabled="invalid" v-on:click="auditUpdate">Обновить</button>
       </div>
     </ValidationObserver>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 import draggable from "vuedraggable";
 
 export default {
-  layout: "admin",
+  async asyncData({ $axios, params }) {
+    try {
+      const data = await $axios.get(`/api/audit/${params.id}`);
+      const questionsList = await $axios.get(`/api/question/`);
+      return { audit: data.data, questionsList: questionsList.data };
+    } catch (err) {
+      if (err.response?.status === 403) {
+        $nuxt.$auth.logout();
+      }
+    }
+  },
   data: () => ({
     name: "",
     introtext: "",
@@ -113,28 +114,18 @@ export default {
     date_formatted: "",
     questions: [],
     questionsList: [],
-    tinyKey: process.env.tinyKey
+    tinyKey: process.env.tinyKey,
   }),
-  async asyncData({ params }) {
-    try {
-      const data = await axios.get(`${process.env.baseUrl}/api/audit/${params.id}`);
-      const questionsList = await axios.get(`${process.env.baseUrl}/api/question/`);
-      return { audit: data.data, questionsList: questionsList.data };
-    } catch (err) {
-      if (err.response.status === 403) {
-        $nuxt.$auth.logout();
-      }
-    }
-  },
+  layout: "admin",
   components: {
     Editor,
     ValidationProvider,
     ValidationObserver,
-    draggable
+    draggable,
   },
   head() {
     return {
-      title: this.audit.name + " - редактировать"
+      title: this.audit.name + " - редактировать",
     };
   },
   methods: {
@@ -143,60 +134,45 @@ export default {
         name: this.name,
         introtext: this.introtext,
         conclusion: this.conclusion,
-        questions: this.questions
+        questions: this.questions,
       };
-      axios
-        .patch(`${process.env.baseUrl}/api/audit/${this.audit._id}`, formData, {
+      this.$axios
+        .patch(`/api/audit/${this.audit._id}`, formData, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.audit.name = response.data.name;
           this.audit.introtext = response.data.introtext;
           this.audit.conclusion = response.data.conclusion;
           this.audit.questions = response.data.questions;
           this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    },
-    auditDelete() {
-      axios
-        .delete(`${process.env.baseUrl}/api/audit/${this.audit._id}`, {
-          headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
-        })
-        .then(
-          setTimeout(() => {
-            this.$router.push(`/audit/`);
-          }, 500),
-          this.$toast.success("Готово", { duration: 1000 })
-        )
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     tinyAddFile(blobInfo, success) {
       let formData = new FormData();
       formData.append("file", blobInfo.blob(), blobInfo.filename());
-      axios
-        .post(`${process.env.baseUrl}/api/audit/addFile`, formData, {
+      this.$axios
+        .post(`/api/audit/addFile`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => success(`/uploads/audit/${response.data.filename}`));
-    }
+        .then((response) => success(`/uploads/audit/${response.data.filename}`));
+    },
   },
   mounted() {
     this.name = this.audit.name;
     this.introtext = this.audit.introtext;
     this.conclusion = this.audit.conclusion;
     this.questions = this.audit.questions;
-    let questionsIds = this.questions.map(item => {
+    let questionsIds = this.questions.map((item) => {
       return item._id;
     });
-    this.questionsList = this.questionsList.filter(item => !questionsIds.includes(item._id));
-  }
+    this.questionsList = this.questionsList.filter((item) => !questionsIds.includes(item._id));
+  },
 };
 </script>

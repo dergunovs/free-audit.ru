@@ -7,38 +7,35 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
-    "start": "cross-env NODE_ENV=production node server/index.js",
-    "generate": "nuxt generate"
+    "start": "cross-env NODE_ENV=production node server/index.js"
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/axios": "^5.12.4",
-    "@nuxtjs/pwa": "^3.3.3",
+    "@nuxtjs/axios": "^5.13.1",
+    "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/toast": "^3.3.1",
-    "@tinymce/tinymce-vue": "^3.2.7",
-    "bcrypt": "^5.0.0",
+    "@tinymce/tinymce-vue": "^3.2.8",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
     "cross-env": "^5.2.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
-    "helmet": "^4.3.1",
-    "mongoose": "^5.11.9",
+    "helmet": "^4.4.1",
+    "mongoose": "^5.11.18",
     "multer": "^1.4.2",
     "node-fetch": "3.0.0-beta.9",
-    "nodemailer": "^6.4.17",
-    "nuxt": "^2.14.12",
+    "nodemailer": "^6.5.0",
+    "nuxt": "^2.15.2",
     "vee-validate": "^3.4.5",
     "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@nuxtjs/date-fns": "^1.4.3",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-prettier": "^3.3.0",
     "node-sass": "^5.0.0",
-    "nodemon": "^2.0.6",
+    "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
-    "sass-loader": "^10.0.1"
+    "sass-loader": "^10.1.1"
   }
 }

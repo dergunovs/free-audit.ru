@@ -3,24 +3,24 @@ const mongoose = require("mongoose");
 const auditSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   introtext: {
-    type: String
+    type: String,
   },
   conclusion: {
-    type: String
+    type: String,
   },
   questions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Question"
-    }
+      ref: "Question",
+    },
   ],
   date_created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Audit", auditSchema);

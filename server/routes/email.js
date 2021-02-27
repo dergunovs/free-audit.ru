@@ -26,15 +26,15 @@ const sendMail = (email, url) => {
     secure: true,
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASSWORD
-    }
+      pass: process.env.EMAIL_PASSWORD,
+    },
   });
   transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: email,
     subject: "Ссылка на аудит free-audit.ru",
     html: `<h1>Ссылка на аудит free-audit.ru</h1>
-      <p><b>Ссылка на аудит:</b> <a href='${url}'>${url}</a></p>`
+      <p><b>Ссылка на аудит:</b> <a href='${url}'>${url}</a></p>`,
   });
 };
 

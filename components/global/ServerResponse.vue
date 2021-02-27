@@ -10,52 +10,51 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
+  name: "CheckResponse",
   data: () => ({
-    statusList: []
+    statusList: [],
   }),
   props: ["url"],
   computed: {
     urlPrefix() {
       return this.$store.state.urlPrefix;
-    }
+    },
   },
   methods: {
     isOk(code) {
       if (code == "200") {
         return true;
       }
-    }
+    },
   },
   watch: {
-    urlPrefix: function() {
+    urlPrefix: function () {
       let formData = {
         url: this.url,
-        urlPrefix: this.urlPrefix
+        urlPrefix: this.urlPrefix,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
-        .then(response => {
+      this.$axios
+        .post(`/api/result/serverResponse/`, formData)
+        .then((response) => {
           this.statusList = response.data;
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    }
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
   },
   mounted() {
     if (this.urlPrefix) {
       let formData = {
         url: this.url,
-        urlPrefix: this.urlPrefix
+        urlPrefix: this.urlPrefix,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/result/serverResponse/`, formData)
-        .then(response => {
+      this.$axios
+        .post(`/api/result/serverResponse/`, formData)
+        .then((response) => {
           this.statusList = response.data;
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
-  }
+  },
 };
 </script>

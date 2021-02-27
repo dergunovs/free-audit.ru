@@ -18,56 +18,53 @@
           language: 'ru',
           plugins: ['autolink lists link table'],
           toolbar:
-            'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+            'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link',
         }"
       />
       <span class="error-message">{{ errors[0] }}</span>
     </ValidationProvider>
 
     <div class="group w12 button-bottom">
-      <button class="input button" :disabled="invalid" v-on:click="answerCreate">
-        Добавить ответ
-      </button>
+      <button class="input button" :disabled="invalid" v-on:click="answerCreate">Добавить ответ</button>
     </div>
   </ValidationObserver>
 </template>
 
 <script>
-import axios from "axios";
-
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
+  name: "AnswerAdd",
   data: () => ({
     answer: { name: "", recomendation: "" },
-    tinyKey: process.env.tinyKey
+    tinyKey: process.env.tinyKey,
   }),
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   props: ["questionId"],
   methods: {
     answerCreate() {
       let formData = {
         name: this.answer.name,
-        recomendation: this.answer.recomendation
+        recomendation: this.answer.recomendation,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/question/${this.questionId}/answer`, formData, {
+      this.$axios
+        .post(`/api/question/${this.questionId}/answer`, formData, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => {
+        .then((response) => {
           let answersUpdated = response.data.answers;
           this.$emit("answerCreate", answersUpdated);
           this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    }
-  }
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
+  },
 };
 </script>

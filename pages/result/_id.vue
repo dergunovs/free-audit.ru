@@ -7,16 +7,12 @@
 
     <ValidationObserver class="form form-result-password-save form-center" v-slot="{ invalid }" tag="div">
       <ValidationProvider rules="required|email" v-slot="{ errors }" class="group w25" tag="div">
-        <label for="email">
-          Выслать ссылку на аудит на аудит
-        </label>
+        <label for="email"> Выслать ссылку на аудит</label>
         <input v-model="email" type="text" id="email" class="input" placeholder="Электронная почта" />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
       <div class="group w12 button-bottom">
-        <button v-on:click="resultSend" :disabled="invalid" class="input button">
-          Отправить
-        </button>
+        <button v-on:click="resultSend" :disabled="invalid" class="input button">Отправить</button>
       </div>
     </ValidationObserver>
 
@@ -35,7 +31,7 @@
           :url="result.url"
           :answers="question.answers"
           :answerPicked="question.answer_picked"
-        />
+        ></component>
       </div>
 
       <div v-for="(answer, index) in question.answers" :key="answer.index" class="group w25">
@@ -63,7 +59,7 @@
             language: 'ru',
             plugins: ['autolink lists link table'],
             toolbar:
-              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link'
+              'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link',
           }"
         />
       </div>
@@ -71,9 +67,7 @@
 
     <div v-if="$nuxt.$auth.user" class="form">
       <div class="group w12 button-bottom">
-        <button class="input button delete" v-on:click="resultDelete">
-          Удалить
-        </button>
+        <button class="input button delete" v-on:click="resultDelete">Удалить</button>
       </div>
     </div>
 
@@ -82,9 +76,6 @@
 </template>
 
 <script>
-import Vue from "vue";
-import axios from "axios";
-
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
@@ -93,11 +84,11 @@ export default {
     result: { audit: { questions: [{ _id: "", answer_picked: "", comment: "" }] } },
     tinyKey: process.env.tinyKey,
     email: "",
-    resultCheck: ""
+    resultCheck: "",
   }),
-  async asyncData({ params }) {
+  async asyncData({ $axios, params }) {
     try {
-      const data = await axios.get(`${process.env.baseUrl}/api/result/${params.id}`);
+      const data = await $axios.get(`/api/result/${params.id}`);
       return { result: data.data };
     } catch (err) {
       console.log(err);
@@ -105,62 +96,53 @@ export default {
   },
   head() {
     return {
-      meta: [{ name: "robots", content: "noindex,nofollow" }]
+      meta: [{ name: "robots", content: "noindex, nofollow" }],
     };
   },
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   head() {
     return {
-      title: this.result.audit._id.name + " сайта " + this.result.url
+      title: this.result.audit._id.name + " сайта " + this.result.url,
     };
   },
   methods: {
     resultUpdate() {
       let formData = {
-        questions: this.result.audit._id.questions
+        questions: this.result.audit._id.questions,
       };
-      axios
-        .patch(`${process.env.baseUrl}/api/result/${this.result._id}`, formData)
-        .then(response => {
+      this.$axios
+        .patch(`/api/result/${this.result._id}`, formData)
+        .then((response) => {
           this.result.audit.questions = response.data.questions;
           this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     resultDelete() {
-      axios
-        .delete(`${process.env.baseUrl}/api/result/${this.result._id}`, {
+      this.$axios
+        .delete(`/api/result/${this.result._id}`, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => {
+        .then((response) => {
           setTimeout(() => {
             this.$router.push(`/result/`);
           }, 500),
             this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     resultSend() {
       let formData = {
-        email: this.email
+        email: this.email,
       };
-      axios.post(`${process.env.baseUrl}/api/email`, formData);
-    }
+      this.$axios.post(`/api/email`, formData);
+    },
   },
-  created() {
-    const getComponents = require.context("~/components/question", false, /\.vue$/);
-
-    getComponents.keys().forEach(file => {
-      const componentConfig = getComponents(file);
-      const componentName = file.replace(/(^.\/)|(\.vue$)/g, "");
-      Vue.component(componentName, componentConfig.default || componentConfig);
-    });
-  }
 };
 </script>

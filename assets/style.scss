@@ -1,16 +1,20 @@
 $color: #ff5050;
 
 @font-face {
-  font-family: font;
-  src: url(/assets/fonts/plumb-regular.otf) format("truetype");
-  font-style: normal;
+  font-family: "font";
+  src: url("/assets/fonts/4.woff2") format("woff2");
   font-weight: 400;
+  font-display: swap;
 }
 @font-face {
-  font-family: font;
-  src: url(/assets/fonts/plumb-bold.otf) format("truetype");
-  font-style: normal;
+  font-family: "font";
+  src: url("/assets/fonts/7.woff2") format("woff2");
   font-weight: 700;
+  font-display: swap;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 html {
@@ -138,7 +142,6 @@ header {
   }
   &.form-result {
     margin: 48px auto;
-    box-sizing: border-box;
     padding: 32px;
     box-shadow: 0px 0px 12px -4px #aaa;
     border-radius: 32px;
@@ -179,7 +182,6 @@ header {
   }
   .group {
     padding: 8px;
-    box-sizing: border-box;
     &.button-bottom {
       display: flex;
       flex-direction: column-reverse;
@@ -192,7 +194,6 @@ header {
         cursor: pointer;
         width: 100%;
         text-align: center;
-        box-sizing: border-box;
         border-radius: 8px;
         + .answer-text {
           display: none;
@@ -240,7 +241,6 @@ header {
       height: 36px;
       padding: 8px;
       margin: 0;
-      box-sizing: border-box;
       border: 1px solid #ccc;
       border-radius: 8px;
       font-size: 14px;
@@ -277,7 +277,6 @@ header {
         border-left: 1px solid #ccc;
         border-right: 1px solid #ccc;
         padding: 12px 16px;
-        box-sizing: border-box;
         background-color: #fff;
         cursor: grab;
         .question-name {
@@ -338,7 +337,6 @@ header {
 .result-introtext-conclusion {
   background-color: #f6f6f6;
   padding: 16px 32px;
-  box-sizing: border-box;
   margin: 32px auto;
   border-left: 8px solid $color;
 }

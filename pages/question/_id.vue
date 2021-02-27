@@ -47,29 +47,25 @@
             plugins: ['autolink lists link table image'],
             toolbar:
               'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
-            images_upload_handler: function(blobInfo, success) {
+            images_upload_handler: function (blobInfo, success) {
               tinyAddFile(blobInfo, success);
-            }
+            },
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
       <div class="group w12 button-bottom">
-        <button class="input button" :disabled="invalid" v-on:click="questionUpdate">
-          Обновить
-        </button>
+        <button class="input button" :disabled="invalid" v-on:click="questionUpdate">Обновить</button>
       </div>
       <div class="group w12 button-bottom">
-        <button class="input button delete" v-on:click="questionDelete">
-          Удалить
-        </button>
+        <button class="input button delete" v-on:click="questionDelete">Удалить</button>
       </div>
     </ValidationObserver>
 
     <h2>Ответы <span v-on:click="showAnswerAdd = true">+</span></h2>
 
-    <answerAdd v-if="showAnswerAdd" :questionId="question._id" @answerCreate="updateAnswers" />
+    <LazyAnswerAdd v-if="showAnswerAdd" :questionId="question._id" @answerCreate="updateAnswers" />
 
     <div class="answers-block">
       <ValidationObserver
@@ -99,9 +95,9 @@
               plugins: ['autolink lists link table image'],
               toolbar:
                 'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
-              images_upload_handler: function(blobInfo, success) {
+              images_upload_handler: function (blobInfo, success) {
                 tinyAddFile(blobInfo, success);
-              }
+              },
             }"
           />
           <span class="error-message">{{ errors[0] }}</span>
@@ -118,9 +114,7 @@
           </button>
         </div>
         <div class="group w25 button-bottom">
-          <button class="input button delete" v-on:click="answerDelete(answer)">
-            Удалить
-          </button>
+          <button class="input button delete" v-on:click="answerDelete(answer)">Удалить</button>
         </div>
       </ValidationObserver>
     </div>
@@ -128,13 +122,24 @@
 </template>
 
 <script>
-import axios from "axios";
-
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
-  layout: "admin",
+  async asyncData({ $axios, params }) {
+    try {
+      const data = await $axios.get(`/api/question/${params.id}`);
+      const audits = await $axios.get(`/api/audit/question/${params.id}`);
+      return {
+        question: data.data,
+        audits: audits.data,
+      };
+    } catch (err) {
+      if (err.response?.status === 403) {
+        $nuxt.$auth.logout();
+      }
+    }
+  },
   data: () => ({
     name: "",
     introtext: "",
@@ -144,31 +149,17 @@ export default {
     componentsList: [],
     showAnswerAdd: false,
     answers: [{ name: "", recomendation: "" }],
-    tinyKey: process.env.tinyKey
+    tinyKey: process.env.tinyKey,
   }),
-  async asyncData({ app, params }) {
-    try {
-      const data = await axios.get(`${process.env.baseUrl}/api/question/${params.id}`);
-      const audits = await axios.get(`${process.env.baseUrl}/api/audit/question/${params.id}`);
-      return {
-        question: data.data,
-        audits: audits.data
-      };
-    } catch (err) {
-      if (err.response.status === 403) {
-        $nuxt.$auth.logout();
-      }
-    }
-  },
+  layout: "admin",
   components: {
     Editor,
     ValidationProvider,
     ValidationObserver,
-    answerAdd: () => import("~/components/answerAdd.vue")
   },
   head() {
     return {
-      title: this.question.name + "редактировать"
+      title: this.question.name + " - редактировать",
     };
   },
   methods: {
@@ -177,29 +168,29 @@ export default {
         name: this.name,
         introtext: this.introtext,
         level: this.level,
-        feature: this.feature
+        feature: this.feature,
       };
-      axios
-        .patch(`${process.env.baseUrl}/api/question/${this.question._id}`, formData, {
+      this.$axios
+        .patch(`/api/question/${this.question._id}`, formData, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.question.name = response.data.name;
           this.question.introtext = response.data.introtext;
           this.question.level = response.data.level;
           this.question.feature = response.data.feature;
           this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     questionDelete() {
-      axios
-        .delete(`${process.env.baseUrl}/api/question/${this.question._id}`, {
+      this.$axios
+        .delete(`/api/question/${this.question._id}`, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
         .then(
           setTimeout(() => {
@@ -207,39 +198,39 @@ export default {
           }, 500),
           this.$toast.success("Готово", { duration: 1000 })
         )
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     answerUpdate(answer) {
       let formData = {
         answerId: answer._id,
         answerName: this.$refs["name" + answer._id][0].value,
-        answerRecomendation: this.$refs["recomendation" + answer._id][0].value
+        answerRecomendation: this.$refs["recomendation" + answer._id][0].value,
       };
-      axios
-        .patch(`${process.env.baseUrl}/api/question/${this.question._id}/answer`, formData, {
-          headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
-        })
-        .then(response => {
-          this.question.answers = response.data.answers;
-          this.$toast.success("Готово", { duration: 1000 });
-        })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    },
-    answerDelete(answer) {
-      axios
-        .delete(`${process.env.baseUrl}/api/question/${this.question._id}/answer`, {
+      this.$axios
+        .patch(`/api/question/${this.question._id}/answer`, formData, {
           headers: {
             Authorization: this.$auth.$storage._state["_token.local"],
-            answerId: answer._id
-          }
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.question.answers = response.data.answers;
           this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
+    answerDelete(answer) {
+      this.$axios
+        .delete(`/api/question/${this.question._id}/answer`, {
+          headers: {
+            Authorization: this.$auth.$storage._state["_token.local"],
+            answerId: answer._id,
+          },
+        })
+        .then((response) => {
+          this.question.answers = response.data.answers;
+          this.$toast.success("Готово", { duration: 1000 });
+        })
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     updateAnswers(answersUpdated) {
       setTimeout(() => {
@@ -250,25 +241,25 @@ export default {
     tinyAddFile(blobInfo, success) {
       let formData = new FormData();
       formData.append("file", blobInfo.blob(), blobInfo.filename());
-      axios
-        .post(`${process.env.baseUrl}/api/question/addFile`, formData, {
+      this.$axios
+        .post(`/api/question/addFile`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => success(`/uploads/question/${response.data.filename}`));
-    }
+        .then((response) => success(`/uploads/question/${response.data.filename}`));
+    },
   },
   mounted() {
     this.name = this.question.name;
     this.introtext = this.question.introtext;
     this.level = this.question.level;
     this.feature = this.question.feature;
-    const getComponents = require.context("~/components/question", false, /\.vue$/);
+    const getComponents = require.context("~/components/global", false, /\.vue$/);
     this.componentsList = getComponents
       .keys()
-      .map(file => [file.replace(/(^.\/)|(\.vue$)/g, ""), getComponents(file)][0]);
-  }
+      .map((file) => [file.replace(/(^.\/)|(\.vue$)/g, ""), getComponents(file)][0]);
+  },
 };
 </script>

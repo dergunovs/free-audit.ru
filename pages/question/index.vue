@@ -24,22 +24,20 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   layout: "admin",
-  async asyncData() {
+  async asyncData({ $axios }) {
     try {
-      const data = await axios.get(`${process.env.baseUrl}/api/question/`);
+      const data = await $axios.get(`/api/question/`);
       return { questions: data.data };
     } catch (err) {
-      if (err.response.status === 403) {
+      if (err.response?.status === 403) {
         $nuxt.$auth.logout();
       }
     }
   },
   head: {
-    title: "Список вопросов"
-  }
+    title: "Список вопросов",
+  },
 };
 </script>

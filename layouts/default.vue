@@ -1,16 +1,8 @@
 <template>
   <div>
-    <headerComponent />
+    <TheHeader />
     <div class="content center">
       <nuxt />
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  components: {
-    headerComponent: () => import("~/components/headerComponent.vue")
-  }
-};
-</script>

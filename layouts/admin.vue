@@ -1,6 +1,6 @@
 <template>
   <div>
-    <headerComponent />
+    <TheHeader />
     <div class="content center">
       <nuxt />
     </div>
@@ -12,11 +12,8 @@ export default {
   middleware: "auth",
   head() {
     return {
-      meta: [{ name: "robots", content: "noindex,nofollow" }]
+      meta: [{ name: "robots", content: "noindex,nofollow" }],
     };
   },
-  components: {
-    headerComponent: () => import("~/components/headerComponent.vue")
-  }
 };
 </script>

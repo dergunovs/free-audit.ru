@@ -25,25 +25,24 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
+  name: "CheckIndex",
   data: () => ({
     yaPagesNumber: "",
     yaPagesNumberWWW: "",
     gPagesNumber: "",
     gPagesNumberWWW: "",
     gPagesNumberHttps: "",
-    gPagesNumberHttpsWWW: ""
+    gPagesNumberHttpsWWW: "",
   }),
   props: ["url"],
   mounted() {
     let formData = {
-      url: this.url
+      url: this.url,
     };
-    axios
-      .post(`${process.env.baseUrl}/api/result/checkIndex/`, formData)
-      .then(response => {
+    this.$axios
+      .post(`/api/result/checkIndex/`, formData)
+      .then((response) => {
         this.yaPagesNumber = response.data.yaPagesNumber;
         this.yaPagesNumberWWW = response.data.yaPagesNumberWWW;
         this.gPagesNumber = response.data.gPagesNumber;
@@ -51,7 +50,7 @@ export default {
         this.gPagesNumberHttps = response.data.gPagesNumberHttps;
         this.gPagesNumberHttpsWWW = response.data.gPagesNumberHttpsWWW;
       })
-      .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-  }
+      .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+  },
 };
 </script>

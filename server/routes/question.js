@@ -6,18 +6,18 @@ const Question = require("../model/question");
 const multer = require("multer");
 const imageMimeTypes = ["image/jpeg", "image/png"];
 var storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "static/uploads/question");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
-  }
+  },
 });
 const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     cb(null, imageMimeTypes.includes(file.mimetype));
-  }
+  },
 });
 
 router.get("/", async (req, res) => {
@@ -41,7 +41,7 @@ router.get("/:id", getQuestion, (req, res) => {
     level: res.question.level,
     feature: res.question.feature,
     date_created: res.question.date_created,
-    answers: res.question.answers
+    answers: res.question.answers,
   });
 });
 
@@ -50,7 +50,7 @@ router.post("/", async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
           name: req.body.name,
           introtext: req.body.introtext,
           level: req.body.level,
-          feature: req.body.feature
+          feature: req.body.feature,
         });
         try {
           await question.save();
@@ -76,7 +76,7 @@ router.patch("/:id", getQuestion, async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -90,7 +90,7 @@ router.patch("/:id", getQuestion, async (req, res) => {
             name: res.question.name,
             introtext: res.question.introtext,
             level: res.question.level,
-            feature: res.question.feature
+            feature: res.question.feature,
           });
         } catch (err) {
           res.status(500).json({ message: err.message });
@@ -105,13 +105,13 @@ router.post("/:id/answer", async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
         const newAnswer = {
           name: req.body.name,
-          recomendation: req.body.recomendation
+          recomendation: req.body.recomendation,
         };
         res.question = await Question.findOneAndUpdate(
           { _id: req.params.id },
@@ -134,7 +134,7 @@ router.patch("/:id/answer", async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -143,8 +143,8 @@ router.patch("/:id/answer", async (req, res) => {
           {
             $set: {
               "answers.$.name": req.body.answerName,
-              "answers.$.recomendation": req.body.answerRecomendation
-            }
+              "answers.$.recomendation": req.body.answerRecomendation,
+            },
           },
           { returnOriginal: false }
         );
@@ -164,7 +164,7 @@ router.delete("/:id/answer", async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -190,7 +190,7 @@ router.delete("/:id", getQuestion, async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {
@@ -210,7 +210,7 @@ router.post("/addFile", upload.single("file"), async (req, res) => {
     res.status(403).json({ message: "Токен не распознан" });
   } else {
     const token = req.headers.authorization.split("Bearer ")[1];
-    jwt.verify(token, process.env.SECRET, async function(err, decoded) {
+    jwt.verify(token, process.env.SECRET, async function (err, decoded) {
       if (err) {
         res.status(403).json({ message: "Токен неправильный" });
       } else {

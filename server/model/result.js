@@ -7,21 +7,21 @@ const resultSchema = new mongoose.Schema({
       {
         _id: { type: mongoose.Schema.Types.ObjectId, ref: "Question" },
         answer_picked: { type: mongoose.Schema.Types.ObjectId },
-        comment: { type: String }
-      }
-    ]
+        comment: { type: String },
+      },
+    ],
   },
   url: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
-    type: String
+    type: String,
   },
   date_created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Result", resultSchema);

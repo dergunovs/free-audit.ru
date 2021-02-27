@@ -1,5 +1,6 @@
 .editorconfig
 .prettierrt
+jsconfig.json
 package-lock.json
 google*
 yandex*

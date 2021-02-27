@@ -13,7 +13,7 @@
     </div>
     <div class="form">
       <div class="group w12">
-        <input type="submit" v-on:click="userLogin" value="Войти" class="input button " />
+        <input type="submit" v-on:click="userLogin" value="Войти" class="input button" />
       </div>
     </div>
   </div>
@@ -25,27 +25,27 @@ export default {
     return {
       login: {
         user: "",
-        password: ""
-      }
+        password: "",
+      },
     };
   },
   head() {
     return {
       title: "Войти в админку free-audit.ru",
-      meta: [{ name: "robots", content: "noindex,nofollow" }]
+      meta: [{ name: "robots", content: "noindex, nofollow" }],
     };
   },
   methods: {
     async userLogin() {
       try {
         let response = await this.$auth.loginWith("local", {
-          data: this.login
+          data: this.login,
         });
         this.$toast.success("Добро пожаловать!", { duration: 1000 });
       } catch (err) {
         this.$toast.error(err.response.data.message, { duration: 5000 });
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -8,52 +8,51 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
+  name: "Check404",
   data: () => ({
-    status: ""
+    status: "",
   }),
   props: ["url"],
   computed: {
     urlPrefix() {
       return this.$store.state.urlPrefix;
-    }
+    },
   },
   methods: {
     isOk(code) {
       if (code == "404") {
         return true;
       }
-    }
+    },
   },
   watch: {
-    urlPrefix: function() {
+    urlPrefix: function () {
       let formData = {
         url: this.url,
-        urlPrefix: this.urlPrefix
+        urlPrefix: this.urlPrefix,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
-        .then(response => {
+      this.$axios
+        .post(`/api/result/check404/`, formData)
+        .then((response) => {
           this.status = response.data;
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    }
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
   },
   mounted() {
     if (this.urlPrefix) {
       let formData = {
         url: this.url,
-        urlPrefix: this.urlPrefix
+        urlPrefix: this.urlPrefix,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/result/check404/`, formData)
-        .then(response => {
+      this.$axios
+        .post(`/api/result/check404/`, formData)
+        .then((response) => {
           this.status = response.data;
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     }
-  }
+  },
 };
 </script>

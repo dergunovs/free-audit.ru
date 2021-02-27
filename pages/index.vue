@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>Бесплатный технический онлайн аудит сайта</h1>
+    <h1>Бесплатный технический аудит сайта</h1>
     <ValidationObserver class="form form-center form-main" v-slot="{ invalid }" tag="div">
       <ValidationProvider
         :rules="{
           required: true,
-          regex: /^([\w\.а-яёА-ЯЁ-]+)\.([a-zA-Zа-яёА-ЯЁ-]{2,6}\.?)(\/[\w\.]*)*\/?$/
+          regex: /^([\w\.а-яёА-ЯЁ-]+)\.([a-zA-Zа-яёА-ЯЁ-]{2,6}\.?)(\/[\w\.]*)*\/?$/,
         }"
         v-slot="{ errors }"
         class="group w50"
@@ -22,25 +22,14 @@
 </template>
 
 <script>
-import axios from "axios";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
 export default {
-  data: () => ({
-    audit: "",
-    url: ""
-  }),
-  async asyncData() {
-    try {
-      const data = await axios.get(`${process.env.baseUrl}/api/audit/`);
-      return { audit: data.data[0]._id };
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  components: {
-    ValidationProvider,
-    ValidationObserver
+  data() {
+    return {
+      auditId: this.$store.state.auditId,
+      url: "",
+    };
   },
   head: {
     title: "Бесплатный онлайн аудит сайта free-audit.ru",
@@ -48,31 +37,30 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: "Бесплатный онлайн аудит сайта free-audit.ru - технический, юзабилити, seo аудит."
-      }
-    ]
+        content: "Бесплатный онлайн аудит сайта free-audit.ru - технический, юзабилити, seo аудит.",
+      },
+    ],
+  },
+  components: {
+    ValidationProvider,
+    ValidationObserver,
   },
   methods: {
     resultCreate() {
       let formData = {
-        audit: { _id: this.audit },
-        url: this.url
+        auditId: this.auditId,
+        url: this.url,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/result`, formData)
-        .then(response => {
+      this.$axios
+        .post(`/api/result`, formData)
+        .then((response) => {
           setTimeout(() => {
             this.$router.push(`/result/${response.data.urlToRedirect}`);
           }, 500),
             this.$toast.success("Шаблон для аудита создан", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
-    }
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
+    },
   },
-  mounted() {
-    if (!this.$auth.loggedIn) {
-      $nuxt.$auth.logout();
-    }
-  }
 };
 </script>

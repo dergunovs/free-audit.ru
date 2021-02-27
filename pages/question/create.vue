@@ -40,26 +40,22 @@
             plugins: ['autolink lists link table image'],
             toolbar:
               'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist | table | link image',
-            images_upload_handler: function(blobInfo, success) {
+            images_upload_handler: function (blobInfo, success) {
               tinyAddFile(blobInfo, success);
-            }
+            },
           }"
         />
         <span class="error-message">{{ errors[0] }}</span>
       </ValidationProvider>
 
       <div class="group w12 button-bottom">
-        <button class="input button" :disabled="invalid" v-on:click="questionCreate">
-          Опубликовать
-        </button>
+        <button class="input button" :disabled="invalid" v-on:click="questionCreate">Опубликовать</button>
       </div>
     </ValidationObserver>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 import Editor from "@tinymce/tinymce-vue";
 import { ValidationProvider, ValidationObserver } from "vee-validate";
 
@@ -71,15 +67,15 @@ export default {
     level: "",
     feature: "",
     componentsList: [],
-    tinyKey: process.env.tinyKey
+    tinyKey: process.env.tinyKey,
   }),
   components: {
     Editor,
     ValidationProvider,
-    ValidationObserver
+    ValidationObserver,
   },
   head: {
-    title: "Создать новый вопрос"
+    title: "Создать новый вопрос",
   },
   methods: {
     questionCreate() {
@@ -87,40 +83,40 @@ export default {
         name: this.name,
         introtext: this.introtext,
         level: this.level,
-        feature: this.feature
+        feature: this.feature,
       };
-      axios
-        .post(`${process.env.baseUrl}/api/question`, formData, {
+      this.$axios
+        .post(`/api/question`, formData, {
           headers: {
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => {
+        .then((response) => {
           setTimeout(() => {
             this.$router.push(`/question`);
           }, 500),
             this.$toast.success("Готово", { duration: 1000 });
         })
-        .catch(err => this.$toast.error(err.response.data.message, { duration: 5000 }));
+        .catch((err) => this.$toast.error(err.response.data.message, { duration: 5000 }));
     },
     tinyAddFile(blobInfo, success) {
       let formData = new FormData();
       formData.append("file", blobInfo.blob(), blobInfo.filename());
-      axios
-        .post(`${process.env.baseUrl}/api/question/addFile`, formData, {
+      this.$axios
+        .post(`/api/question/addFile`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: this.$auth.$storage._state["_token.local"]
-          }
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         })
-        .then(response => success(`/uploads/question/${response.data.filename}`));
-    }
+        .then((response) => success(`/uploads/question/${response.data.filename}`));
+    },
   },
   mounted() {
-    const getComponents = require.context("~/components/question", false, /\.vue$/);
+    const getComponents = require.context("~/components/global", false, /\.vue$/);
     this.componentsList = getComponents
       .keys()
-      .map(file => [file.replace(/(^.\/)|(\.vue$)/g, ""), getComponents(file)][0]);
-  }
+      .map((file) => [file.replace(/(^.\/)|(\.vue$)/g, ""), getComponents(file)][0]);
+  },
 };
 </script>

@@ -3,34 +3,34 @@ const mongoose = require("mongoose");
 const questionSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   introtext: {
     type: String,
-    required: true
+    required: true,
   },
   level: {
-    type: String
+    type: String,
   },
   answers: [
     {
       name: { type: String, required: true },
-      recomendation: { type: String, required: true }
-    }
+      recomendation: { type: String, required: true },
+    },
   ],
   answer_picked: {
-    type: mongoose.Schema.Types.ObjectId
+    type: mongoose.Schema.Types.ObjectId,
   },
   comment: {
-    type: String
+    type: String,
   },
   feature: {
-    type: String
+    type: String,
   },
   date_created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 module.exports = mongoose.model("Question", questionSchema);
